@@ -21,12 +21,12 @@
                    <DataTemplate >
                        <ViewCell>
                            <ViewCell.View>
-                                <FlexLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                     <Image Source="{Binding Image}" WidthRequest="24" HeightRequest="24" HorizontalOptions="Start" VerticalOptions="Start"/>
-                                    <StackLayout HorizontalOptions="FillAndExpand" Margin="20,0,0,0">
-                                        <Label Text="{Binding FileName}" FontSize="20" TextColor="Teal" HorizontalOptions="Center"/>
+                                    <StackLayout HorizontalOptions="FillAndExpand" Margin="25,0,0,0">
+                                        <Label Text="{Binding FileName}" FontSize="15" TextColor="Teal" HorizontalOptions="Center"/>
                                     </StackLayout>
-                               </FlexLayout>
+                               </Grid>
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>

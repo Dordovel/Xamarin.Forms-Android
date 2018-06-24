@@ -9,15 +9,16 @@ namespace FirstProject
     public partial class MainPage : ContentPage
     {
         private File file;
-        private static string path;
-        private List<Files> list;
+        private List<Files> list = new List<Files>();
+        private static Files files;
 
 
         public MainPage()
         {
+            files = new Files();
             InitializeComponent();
-            path += "/";
-            FilePrint();
+            files.Path += "/";
+            Call();
 
         }
 
@@ -26,42 +27,21 @@ namespace FirstProject
             InitializeComponent();
 
             this.file = file;
+            Call();
 
-            FilePrint();
         }
 
-
-        private void FilePrint()
+        private void Call()
         {
-            list = new List<Files>();
-
-            if (this.file == null)
-            {
-                this.file = new File("/");
-            }
-
-            path += file.Name;
-            Count.Text = path;
-            foreach (var VARIABLE in file.ListFiles())
-            {
-                if (VARIABLE.IsDirectory)
-                {
-                    list.Add(new Files() {FileName = VARIABLE.Name, Getfile = VARIABLE,Image = "folder.png"});
-                }
-                else if (VARIABLE.IsFile && Path.GetExtension(VARIABLE.Name).Equals("mp3"))
-                {
-                    list.Add(new Files() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png" });
-                }
-            }
-
-            listView.ItemsSource = list;
+            listView.ItemsSource = files.FilePrint(this.file);
         }
+       
 
         private void Open()
         {
-            Count.Text = path;
+            Count.Text = files.Path;
 
-            path += ">";
+            files.Path += ">";
 
             Navigation.PushAsync(new MainPage(this.file));
         }
@@ -70,9 +50,18 @@ namespace FirstProject
         {
             file = ((Files)listView.SelectedItem).Getfile;
 
-            switch (await DisplayActionSheet(file.Name, "Cancel", null, "Open"))
+            if (!file.IsFile)
             {
-                case "Open": Open();break;
+                switch (await DisplayActionSheet(file.Name, "Cancel", null, "Open"))
+                {
+                    case "Open":
+                        Open();
+                        break;
+                }
+            }
+            else
+            {
+                await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
             }
         }
     }
