@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FirstProject"
+             x:Class="FirstProject.MainPage"
+             Title="Xamarin"
+             >
+<ContentPage.Content>
+    <StackLayout>
+        <StackLayout >
+        <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="Crimson"
+               Margin="10,10,0,0"
+               FontSize="12" />
+        </StackLayout>
+            <ListView x:Name="listView"  Margin="10,10,10,10" 
+                      SeparatorColor="CornflowerBlue" 
+                      HorizontalOptions="FillAndExpand" 
+                       ItemTapped="ListView_OnItemSelected" >
+                <ListView.ItemTemplate>
+                   <DataTemplate >
+                       <ViewCell>
+                           <ViewCell.View>
+                                <FlexLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                    <Image Source="{Binding Image}" WidthRequest="24" HeightRequest="24" HorizontalOptions="Start" VerticalOptions="Start"/>
+                                    <StackLayout HorizontalOptions="FillAndExpand" Margin="20,0,0,0">
+                                        <Label Text="{Binding FileName}" FontSize="18" TextColor="Teal" HorizontalOptions="Center"/>
+                                    </StackLayout>
+                               </FlexLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                </ListView>
+        </StackLayout>
+</ContentPage.Content>
+</ContentPage>
