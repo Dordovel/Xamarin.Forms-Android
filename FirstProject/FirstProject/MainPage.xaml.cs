@@ -9,22 +9,24 @@ namespace FirstProject
     {
         private File file;
         private static Files files;
-        private static string Path;
+        private string Path;
+        private static bool mainPage;
 
 
         public MainPage()
         {
-            files = new Files();
             InitializeComponent();
-            MainPage.Path += "/>";
+            files = new Files();
+            Path += "/>";
             Call();
 
         }
 
-        public MainPage(File file)
+        public MainPage(File file,string path)
         {
             InitializeComponent();
             this.file = file;
+            Path = path;
 
             files = new Files();
 
@@ -42,9 +44,10 @@ namespace FirstProject
 
         private void Open()
         {
-            MainPage.Path += file.Name+"/>";
+            Path += file.Name+"/>";
 
-            Navigation.PushAsync(new MainPage(this.file));
+            Navigation.PushAsync(new MainPage(this.file,this.Path));
+            
 
         }
 
