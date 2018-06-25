@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using FirstProject.Model;
 using Xamarin.Forms;
 using File = Java.IO.File;
@@ -9,15 +8,15 @@ namespace FirstProject
     public partial class MainPage : ContentPage
     {
         private File file;
-        private List<Files> list = new List<Files>();
         private static Files files;
+        private static string Path;
 
 
         public MainPage()
         {
             files = new Files();
             InitializeComponent();
-            files.Path += "/";
+            MainPage.Path += "/>";
             Call();
 
         }
@@ -25,25 +24,28 @@ namespace FirstProject
         public MainPage(File file)
         {
             InitializeComponent();
-
             this.file = file;
+
+            files = new Files();
+
             Call();
 
         }
 
         private void Call()
         {
+            Count.Text = Path;
+
             listView.ItemsSource = files.FilePrint(this.file);
         }
-       
+
 
         private void Open()
         {
-            Count.Text = files.Path;
-
-            files.Path += ">";
+            MainPage.Path += file.Name+"/>";
 
             Navigation.PushAsync(new MainPage(this.file));
+
         }
 
         private async void ListView_OnItemSelected(object sender, ItemTappedEventArgs e)

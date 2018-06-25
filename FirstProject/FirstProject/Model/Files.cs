@@ -15,7 +15,6 @@ namespace FirstProject.Model
         public string Image { get; set; }
 
         private List<Files> list;
-        public string Path;
 
         public Files()
         {
@@ -55,8 +54,6 @@ namespace FirstProject.Model
             {
                 file = new File("/");
             }
-
-            Path += file.Name;
 
             foreach (var VARIABLE in SortFile(file.ListFiles()))
             {

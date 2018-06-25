@@ -22,7 +22,7 @@
                        <ViewCell>
                            <ViewCell.View>
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                    <Image Source="{Binding Image}" WidthRequest="24" HeightRequest="24" HorizontalOptions="Start" VerticalOptions="Start"/>
+                                    <Image Source="{Binding Image}" WidthRequest="48" HeightRequest="48" HorizontalOptions="Start" VerticalOptions="Start"/>
                                     <StackLayout HorizontalOptions="FillAndExpand" Margin="25,0,0,0">
                                         <Label Text="{Binding FileName}" FontSize="15" TextColor="Teal" HorizontalOptions="Center"/>
                                     </StackLayout>
