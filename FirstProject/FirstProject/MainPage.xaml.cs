@@ -1,6 +1,9 @@
-﻿using System.IO;
-using FirstProject.Model;
-using Xamarin.Forms;
+﻿using System;
+using Android;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
+using FirstProject.Model;using Xamarin.Forms;
+using Environment = Android.OS.Environment;
 using File = Java.IO.File;
 
 namespace FirstProject
@@ -17,6 +20,7 @@ namespace FirstProject
         {
             InitializeComponent();
             files = new Files();
+            file = new File("/");
             Path += "/>";
             Call();
 
@@ -27,6 +31,7 @@ namespace FirstProject
             InitializeComponent();
             this.file = file;
             Path = path;
+            Count.Text = file.Name;
 
             files = new Files();
 

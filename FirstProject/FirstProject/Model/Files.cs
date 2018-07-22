@@ -50,11 +50,6 @@ namespace FirstProject.Model
         {
             list.Clear();
 
-            if (file == null)
-            {
-                file = new File("/");
-            }
-
             foreach (var VARIABLE in SortFile(file.ListFiles()))
             {
                 if (VARIABLE.IsDirectory)

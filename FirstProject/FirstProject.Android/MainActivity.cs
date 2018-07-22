@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Android;
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using Xamarin.Forms;
+using Android.Support.V4.App;
 
 namespace FirstProject.Droid
 {
@@ -22,6 +20,13 @@ namespace FirstProject.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+
+            ActivityCompat.RequestPermissions(this,
+                new String[] {
+                    Manifest.Permission.ReadExternalStorage,
+                    Manifest.Permission.WriteExternalStorage
+                },
+                requestCode:1);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());

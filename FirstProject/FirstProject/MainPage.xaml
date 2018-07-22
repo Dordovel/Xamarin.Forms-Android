@@ -8,8 +8,8 @@
              >
 <ContentPage.Content>
     <StackLayout>
-        <StackLayout >
-        <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="Crimson"
+        <StackLayout BackgroundColor="DarkSlateGray">
+        <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="Cornsilk"
                Margin="10,10,0,0"
                FontSize="12" />
         </StackLayout>
@@ -22,9 +22,9 @@
                        <ViewCell>
                            <ViewCell.View>
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                    <Image Source="{Binding Image}" WidthRequest="48" HeightRequest="48" HorizontalOptions="Start" VerticalOptions="Start"/>
-                                    <StackLayout HorizontalOptions="FillAndExpand" Margin="25,0,0,0">
-                                        <Label Text="{Binding FileName}" FontSize="15" TextColor="Teal" HorizontalOptions="Center"/>
+                                    <Image Source="{Binding Image}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Start" VerticalOptions="Start"/>
+                                    <StackLayout HorizontalOptions="FillAndExpand" Margin="48,0,0,0">
+                                        <Label Text="{Binding FileName}" FontSize="12"  TextColor="Black" HorizontalOptions="Start"/>
                                     </StackLayout>
                                </Grid>
                             </ViewCell.View>
