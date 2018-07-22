@@ -72,5 +72,27 @@ namespace FirstProject.Model
             return list;
         }
 
+        public bool Delete(File file)
+        {
+            try
+            {
+                switch (file.IsDirectory)
+                {
+                    case true:
+                        Directory.Delete(file.Path);
+                        break;
+                    case false:
+                        System.IO.File.Delete(file.Path);
+                        break;
+                }
+            }
+            catch (IOException e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

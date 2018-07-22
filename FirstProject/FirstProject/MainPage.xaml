@@ -6,14 +6,13 @@
              x:Class="FirstProject.MainPage"
              Title="Xamarin"
              >
-<ContentPage.Content>
+    <ContentPage.Content>
     <StackLayout>
         <StackLayout BackgroundColor="DarkSlateGray">
-        <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="Cornsilk"
-               Margin="10,10,0,0"
+                <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="Cornsilk"
                FontSize="12" />
-        </StackLayout>
-            <ListView x:Name="listView"  Margin="10,10,10,10" 
+            </StackLayout>
+            <ListView x:Name="listView" 
                       SeparatorColor="CornflowerBlue" 
                       HorizontalOptions="FillAndExpand" 
                        ItemTapped="ListView_OnItemSelected" >
@@ -28,6 +27,9 @@
                                     </StackLayout>
                                </Grid>
                             </ViewCell.View>
+                           <ViewCell.ContextActions>
+                                <MenuItem Text="Open" Clicked="MenuItem_OnClicked"></MenuItem>
+                           </ViewCell.ContextActions>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

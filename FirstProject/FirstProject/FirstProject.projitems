@@ -20,5 +20,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Model\Files.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IPresenter.cs" />
   </ItemGroup>
 </Project>
