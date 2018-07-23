@@ -50,7 +50,7 @@ namespace FirstProject
 
             ToolbarItems.Add(item);
 
-            listView.ItemsSource = files.FilePrint(this.file);
+            listView.ItemsSource = files.FilePrint(file);
         }
 
         private void toolbar()
@@ -97,7 +97,7 @@ namespace FirstProject
         private async void ListView_OnItemSelected(object sender, ItemTappedEventArgs e)
         {
 
-            File temp = ((Files)listView.SelectedItem).Getfile;
+            File temp = ((Template)listView.SelectedItem).Getfile;
             switch (await DisplayActionSheet(file.Name, "Cancel", null, "Open", "Delete"))
             {
                 case "Open":

@@ -10,26 +10,11 @@ namespace FirstProject.Model
 {
     public class Files
     {
-        private static Files resFiles;
-        public string FileName { get; set; }
-        public File Getfile { get; set; }
-        public string Image { get; set; }
-
-        private List<Files> list;
+        private List<Template> list;
 
         public Files()
         {
-            list= new List<Files>();
-        }
-
-        public static Files GetResFiles()
-        {
-            if (resFiles == null)
-            {
-                resFiles = new Files();
-            }
-
-            return resFiles;
+            list= new List<Template>();
         }
 
         private File[] SortFile(File [] listFile)
@@ -57,7 +42,7 @@ namespace FirstProject.Model
 
         }
 
-        public List<Files> FilePrint(File file)
+        public List<Template> FilePrint(File file)
         {
             list.Clear();
 
@@ -65,17 +50,17 @@ namespace FirstProject.Model
             {
                 if (VARIABLE.IsDirectory)
                 {
-                    list.Add(new Files() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png" });
+                    list.Add(new Template() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png" });
                 }
                 else if (VARIABLE.IsFile)
                 {
                     if (System.IO.Path.GetExtension(VARIABLE.ToString()).Equals(".mp3"))
                     {
-                        list.Add(new Files() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png" });
+                        list.Add(new Template() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png" });
                     }
                     else
                     {
-                        list.Add(new Files() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png" });
+                        list.Add(new Template() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png" });
                     }
                 }
             }

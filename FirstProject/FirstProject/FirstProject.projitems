@@ -21,5 +21,6 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Model\Files.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Template.cs" />
   </ItemGroup>
 </Project>
