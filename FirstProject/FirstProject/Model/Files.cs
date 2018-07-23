@@ -10,6 +10,7 @@ namespace FirstProject.Model
 {
     public class Files
     {
+        private static Files resFiles;
         public string FileName { get; set; }
         public File Getfile { get; set; }
         public string Image { get; set; }
@@ -19,6 +20,16 @@ namespace FirstProject.Model
         public Files()
         {
             list= new List<Files>();
+        }
+
+        public static Files GetResFiles()
+        {
+            if (resFiles == null)
+            {
+                resFiles = new Files();
+            }
+
+            return resFiles;
         }
 
         private File[] SortFile(File [] listFile)

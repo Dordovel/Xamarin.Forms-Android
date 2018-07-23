@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Windows.Input;
-using Android;
-using Android.Support.V4.App;
-using Android.Support.V4.Content;
-using Android.Support.V7.App;
-using Android.Views;
-using FirstProject.Droid;
-using FirstProject.Model;using Xamarin.Forms;
-using Xamarin.Forms.Internals;
-using AlertDialog = Android.App.AlertDialog;
-using Environment = Android.OS.Environment;
+using FirstProject.Model;
+using Xamarin.Forms;
 using File = Java.IO.File;
 
 namespace FirstProject
@@ -20,7 +10,6 @@ namespace FirstProject
         private File file;
         private static Files files;
         private string Path;
-        private static bool mainPage;
         private static ToolbarItem item;
 
 
@@ -68,10 +57,10 @@ namespace FirstProject
         {
             item = new ToolbarItem()
             {
-                Text = "Menu",
+                Text = "Новая папка",
                 Order = ToolbarItemOrder.Default
-
             };
+            item.Clicked += MenuItem_OnClicked;
         }
 
 
@@ -88,12 +77,19 @@ namespace FirstProject
         {
             File temp = obj as File;
 
-            if (await DisplayAlert("Delete", "Вы действительно хотите удалить Файл/Папку?", "Yes", "No"))
+            if (temp == null)
             {
-
-                if (files.Delete(temp as File))
+                Count.Text = "File is null";
+            }
+            else
+            {
+                if (await DisplayAlert("Delete", "Вы действительно хотите удалить Файл/Папку?", "Yes", "No"))
                 {
-                    await DisplayAlert("", "Succeful", "Ok");
+
+                    if (files.Delete(temp))
+                    {
+                        await DisplayAlert("", "Succeful", "Ok");
+                    }
                 }
             }
         }
@@ -101,27 +97,26 @@ namespace FirstProject
         private async void ListView_OnItemSelected(object sender, ItemTappedEventArgs e)
         {
 
-                /* File temp = ((Files)listView.SelectedItem).Getfile;
-                     switch (await DisplayActionSheet(file.Name, "Cancel", null, "Open","Delete"))
-                     {
-                         case "Open":
-                             if (!temp.IsFile)
-                             {
-                                 Open(temp);
-                             }
-                             else
-                             {
-                             await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
-                         }
-                             break;
+            File temp = ((Files)listView.SelectedItem).Getfile;
+            switch (await DisplayActionSheet(file.Name, "Cancel", null, "Open", "Delete"))
+            {
+                case "Open":
+                    if (!temp.IsFile)
+                    {
+                        Open(temp);
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
+                    }
+                    break;
 
-                         case "Delete":
+                case "Delete":
 
-                             Delete(temp);
+                    Delete(temp);
 
-                             break;
-                     }
-                     */
+                    break;
+            }
 
         }
 

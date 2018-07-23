@@ -28,7 +28,7 @@
                                </Grid>
                             </ViewCell.View>
                            <ViewCell.ContextActions>
-                                <MenuItem Text="Open" Clicked="MenuItem_OnClicked"></MenuItem>
+                                <MenuItem Text="Delete"></MenuItem>
                            </ViewCell.ContextActions>
                         </ViewCell>
                     </DataTemplate>
