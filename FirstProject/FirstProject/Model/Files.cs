@@ -12,9 +12,24 @@ namespace FirstProject.Model
     {
         private List<Template> list;
 
+        public static string Path;
+
+        public File file { get; set; }
+        public static Files ResFile { get; set; }
+
         public Files()
         {
-            list= new List<Template>();
+            file = new File("/");
+            Path = "/>";
+            list = new List<Template>();
+        }
+
+        public Files(File file,string path)
+        {
+            this.file = file;
+            Path = path;
+
+            list = new List<Template>();
         }
 
         private File[] SortFile(File [] listFile)
@@ -42,7 +57,7 @@ namespace FirstProject.Model
 
         }
 
-        public List<Template> FilePrint(File file)
+        public List<Template> FilePrint()
         {
             list.Clear();
 
@@ -67,6 +82,21 @@ namespace FirstProject.Model
 
             return list;
         }
+
+        public bool NewDirectory(string DirectoryName)
+        {
+            try
+            {
+                Directory.CreateDirectory(file.Path+"/"+DirectoryName);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 
         public bool Delete(File file)
         {

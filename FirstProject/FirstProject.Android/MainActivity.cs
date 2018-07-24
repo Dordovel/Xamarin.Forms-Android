@@ -8,8 +8,6 @@ using Android.Views;
 using Android.Widget;
 using FirstProject.Droid;
 using FirstProject.Model;
-using Java.IO;
-using Xamarin.Forms;
 using static FirstProject.Droid.Resource.Layout;
 using Button = Android.Widget.Button;
 using View = Android.Views.View;
@@ -59,17 +57,18 @@ namespace FirstProject.Droid
 
         private void AlertDialogButton_Ok_Click(object sender, EventArgs e)
         {
-            Toast.MakeText(this,Path,ToastLength.Short).Show();
+            Files temp = Files.ResFile;
+           
+            var DirName = view.FindViewById<EditText>(Resource.Id.editTextDialogAlert).Text;
+            if (DirName != null)
+            {
+                Toast.MakeText(this, temp.NewDirectory(DirName)?"Каталог: "+DirName+" успешно создан!":"Ошибка!", ToastLength.Long).Show();
+            }
         }
 
         public void clickButtonMenu(object sender, EventArgs e)
         {
             dialog.Show();
-        }
-
-        public void SetPath(string res)
-        {
-            Path = res;
         }
     }
 }

@@ -7,7 +7,7 @@
              Title="Xamarin"
              >
     <ContentPage.Content>
-    <StackLayout>
+    <StackLayout >
         <StackLayout BackgroundColor="DarkSlateGray">
                 <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="Cornsilk"
                FontSize="12" />
@@ -15,21 +15,19 @@
             <ListView x:Name="listView" 
                       SeparatorColor="CornflowerBlue" 
                       HorizontalOptions="FillAndExpand" 
-                       ItemTapped="ListView_OnItemSelected" >
+                      ItemSelected="ListView_OnItemSelected"
+                      >
                 <ListView.ItemTemplate>
                    <DataTemplate >
                        <ViewCell>
-                           <ViewCell.View>
+                            <ViewCell.View>
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                     <Image Source="{Binding Image}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Start" VerticalOptions="Start"/>
                                     <StackLayout HorizontalOptions="FillAndExpand" Margin="48,0,0,0">
                                         <Label Text="{Binding FileName}" FontSize="12"  TextColor="Black" HorizontalOptions="Start"/>
                                     </StackLayout>
-                               </Grid>
+                                </Grid>
                             </ViewCell.View>
-                           <ViewCell.ContextActions>
-                                <MenuItem Text="Delete"></MenuItem>
-                           </ViewCell.ContextActions>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

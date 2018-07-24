@@ -13,16 +13,16 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:dividerPadding="3dp"
-            android:divider="@drawable/deviderDialogAlert"
             android:showDividers="middle">
             <TextView
-                android:text="Dialog"
+                android:text="Новая Папка"
                 android:id="@+id/dialogAlert"
                 android:textAlignment="center"
                 android:textSize="20dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:layout_width="100dp"
+                android:layout_width="200dp"
+                android:textColor="#8B008B"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
@@ -30,12 +30,13 @@
             android:layout_height="50dp">
             <EditText
                 android:id="@+id/editTextDialogAlert"
-                android:text="Message"
+                android:hint="Название папки"
                 android:textAlignment="textStart"
                 android:textSize="14dp"
                 android:layout_marginLeft="55dp"
                 android:layout_width="200dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:textColor="#00008B" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"

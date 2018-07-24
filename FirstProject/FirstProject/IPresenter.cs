@@ -8,7 +8,6 @@ namespace FirstProject
     interface IPresenter
     {
         void clickButtonMenu(object sender, EventArgs e);
-
-        void SetPath(String res);
+ 
     }
 }

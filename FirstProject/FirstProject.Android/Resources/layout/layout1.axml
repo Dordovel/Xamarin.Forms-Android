@@ -13,10 +13,9 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:dividerPadding="3dp"
-            android:divider="@drawable/deviderDialogAlert"
             android:showDividers="middle">
             <TextView
-                android:text="Dialog"
+                android:text="Новая Папка"
                 android:id="@+id/dialogAlert"
                 android:textAlignment="center"
                 android:textSize="20dp"
@@ -30,7 +29,7 @@
             android:layout_height="50dp">
             <EditText
                 android:id="@+id/editTextDialogAlert"
-                android:text="Message"
+                android:hint="Новая Папка"
                 android:textAlignment="textStart"
                 android:textSize="14dp"
                 android:layout_marginLeft="55dp"

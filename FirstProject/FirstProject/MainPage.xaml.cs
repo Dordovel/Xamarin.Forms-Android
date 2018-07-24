@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Widget;
 using FirstProject.Model;
 using Xamarin.Forms;
 using File = Java.IO.File;
@@ -7,9 +8,7 @@ namespace FirstProject
 {
     public partial class MainPage : ContentPage
     {
-        private File file;
-        private static Files files;
-        private string Path;
+        private static Files PersonFile;
         private static ToolbarItem item;
 
 
@@ -18,30 +17,36 @@ namespace FirstProject
         {
             InitializeComponent();
 
-            files = new Files();
-            file = new File("/");
-            Path += "/>";
+            PersonFile = new Files();
+            Files.ResFile = PersonFile;
             Render();
-
-
+            
         }
 
         public MainPage(File file, string path)
         {
             InitializeComponent();
-            this.file = file;
-            Path = path;
-            Count.Text = file.Name;
+            try
+            {
 
-            files = new Files();
+                PersonFile = new Files(file, path);
+                Files.ResFile = PersonFile;
 
-            Render();
+                Count.Text = file.Name;
+
+
+                Render();
+            }
+            catch (NullReferenceException e)
+            {
+                Count.Text = e.Message;
+            }
 
         }
 
         private void Render()
         {
-            Count.Text = Path;
+            Count.Text = Files.Path;
 
             if (item == null)
             {
@@ -50,7 +55,7 @@ namespace FirstProject
 
             ToolbarItems.Add(item);
 
-            listView.ItemsSource = files.FilePrint(file);
+            listView.ItemsSource = PersonFile.FilePrint();
         }
 
         private void toolbar()
@@ -58,7 +63,8 @@ namespace FirstProject
             item = new ToolbarItem()
             {
                 Text = "Новая папка",
-                Order = ToolbarItemOrder.Default
+                Order = ToolbarItemOrder.Default,
+                Icon=new FileImageSource(){File="new_folder.png"}
             };
             item.Clicked += MenuItem_OnClicked;
         }
@@ -67,9 +73,9 @@ namespace FirstProject
         private void Open(object obj)
         {
             File temp = obj as File;
-            Path += temp.Name + "/>";
+            Files.Path += temp.Name + "/>";
 
-            Navigation.PushAsync(new MainPage(temp, this.Path), true);
+            Navigation.PushAsync(new MainPage(temp, Files.Path), true);
 
         }
 
@@ -83,10 +89,10 @@ namespace FirstProject
             }
             else
             {
-                if (await DisplayAlert("Delete", "Вы действительно хотите удалить Файл/Папку?", "Yes", "No"))
+                if (await DisplayAlert("Delete", "Вы действительно хотите удалить Файл/Папку?   "+temp.Name, "Yes", "No"))
                 {
 
-                    if (files.Delete(temp))
+                    if (PersonFile.Delete(temp))
                     {
                         await DisplayAlert("", "Succeful", "Ok");
                     }
@@ -94,15 +100,16 @@ namespace FirstProject
             }
         }
 
-        private async void ListView_OnItemSelected(object sender, ItemTappedEventArgs e)
+        private async void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
 
             File temp = ((Template)listView.SelectedItem).Getfile;
-            switch (await DisplayActionSheet(file.Name, "Cancel", null, "Open", "Delete"))
+            switch (await DisplayActionSheet(PersonFile.file.Name, "Cancel", null, "Open", "Delete"))
             {
                 case "Open":
                     if (!temp.IsFile)
                     {
+                        listView.SelectedItem = null;
                         Open(temp);
                     }
                     else
