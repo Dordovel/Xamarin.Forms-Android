@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
-using Android.Content.Res;
-using Android.OS;
 using File = Java.IO.File;
 
 namespace FirstProject.Model
 {
     public class Files
     {
-        private List<Template> list;
+        private ObservableCollection<Template> list;
 
         public static string Path;
 
@@ -21,7 +19,7 @@ namespace FirstProject.Model
         {
             file = new File("/");
             Path = "/>";
-            list = new List<Template>();
+            list = new ObservableCollection<Template>();
         }
 
         public Files(File file,string path)
@@ -29,7 +27,7 @@ namespace FirstProject.Model
             this.file = file;
             Path = path;
 
-            list = new List<Template>();
+            list = new ObservableCollection<Template>();
         }
 
         private File[] SortFile(File [] listFile)
@@ -57,7 +55,7 @@ namespace FirstProject.Model
 
         }
 
-        public List<Template> FilePrint()
+        public ObservableCollection<Template> FilePrint()
         {
             list.Clear();
 
@@ -87,7 +85,9 @@ namespace FirstProject.Model
         {
             try
             {
-                Directory.CreateDirectory(file.Path+"/"+DirectoryName);
+                string path=file.Path + "/" + DirectoryName;
+                Directory.CreateDirectory(path);
+                list.Add(new Template(){FileName =DirectoryName,Getfile = new File(path),Image = "folder.png"});
             }
             catch (Exception e)
             {
@@ -98,19 +98,24 @@ namespace FirstProject.Model
         }
 
 
-        public bool Delete(File file)
+        public bool Delete(Template template)
         {
             try
             {
-                switch (file.IsDirectory)
+
+                list.Remove(template);
+
+                switch (template.Getfile.IsDirectory)
                 {
                     case true:
-                        Directory.Delete(file.Path);
+                        Directory.Delete(template.Getfile.Path);
                         break;
                     case false:
-                        System.IO.File.Delete(file.Path);
+                        System.IO.File.Delete(template.Getfile.Path);
+
                         break;
                 }
+
             }
             catch (IOException e)
             {

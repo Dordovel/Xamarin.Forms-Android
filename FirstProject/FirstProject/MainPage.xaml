@@ -7,24 +7,30 @@
              Title="Xamarin"
              >
     <ContentPage.Content>
-    <StackLayout >
-        <StackLayout BackgroundColor="DarkSlateGray">
+        <StackLayout >
+            <StackLayout BackgroundColor="DarkSlateGray">
                 <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="Cornsilk"
                FontSize="12" />
             </StackLayout>
-            <ListView x:Name="listView" 
+            <ListView x:Name="listViewMainPage" 
                       SeparatorColor="CornflowerBlue" 
-                      HorizontalOptions="FillAndExpand" 
-                      ItemSelected="ListView_OnItemSelected"
+                      HorizontalOptions="FillAndExpand"
+                      ItemTapped="ListView_OnItemSelected"
                       >
                 <ListView.ItemTemplate>
                    <DataTemplate >
-                       <ViewCell>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                               <MenuItem Text="Open" Clicked="MenuItem_OnClickedContextMenu" ></MenuItem>
+                                <MenuItem Text="Delete" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
+                                <MenuItem Text="Move" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
+                                <MenuItem Text="Copy" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
+                           </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                     <Image Source="{Binding Image}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Start" VerticalOptions="Start"/>
                                     <StackLayout HorizontalOptions="FillAndExpand" Margin="48,0,0,0">
-                                        <Label Text="{Binding FileName}" FontSize="12"  TextColor="Black" HorizontalOptions="Start"/>
+                                        <Label x:Name="labelText" Text="{Binding FileName}" FontSize="12"  TextColor="Black" HorizontalOptions="Start"/>
                                     </StackLayout>
                                 </Grid>
                             </ViewCell.View>

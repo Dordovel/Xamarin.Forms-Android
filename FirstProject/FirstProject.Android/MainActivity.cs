@@ -63,6 +63,8 @@ namespace FirstProject.Droid
             if (DirName != null)
             {
                 Toast.MakeText(this, temp.NewDirectory(DirName)?"Каталог: "+DirName+" успешно создан!":"Ошибка!", ToastLength.Long).Show();
+
+                dialog.Cancel();
             }
         }
 

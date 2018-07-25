@@ -1,8 +1,8 @@
 ﻿using System;
-using Android.Widget;
 using FirstProject.Model;
+using Java.IO;
 using Xamarin.Forms;
-using File = Java.IO.File;
+using View = Android.Views.View;
 
 namespace FirstProject
 {
@@ -26,21 +26,14 @@ namespace FirstProject
         public MainPage(File file, string path)
         {
             InitializeComponent();
-            try
-            {
 
                 PersonFile = new Files(file, path);
+
                 Files.ResFile = PersonFile;
 
                 Count.Text = file.Name;
-
-
+            
                 Render();
-            }
-            catch (NullReferenceException e)
-            {
-                Count.Text = e.Message;
-            }
 
         }
 
@@ -55,7 +48,7 @@ namespace FirstProject
 
             ToolbarItems.Add(item);
 
-            listView.ItemsSource = PersonFile.FilePrint();
+            listViewMainPage.ItemsSource = PersonFile.FilePrint();
         }
 
         private void toolbar()
@@ -67,13 +60,19 @@ namespace FirstProject
                 Icon=new FileImageSource(){File="new_folder.png"}
             };
             item.Clicked += MenuItem_OnClicked;
+            
         }
-
+        
 
         private void Open(object obj)
         {
             File temp = obj as File;
             Files.Path += temp.Name + "/>";
+
+            if (temp == null)
+            {
+                Count.Text = "Error";
+            }
 
             Navigation.PushAsync(new MainPage(temp, Files.Path), true);
 
@@ -81,7 +80,7 @@ namespace FirstProject
 
         public async void Delete(object obj)
         {
-            File temp = obj as File;
+            File temp = (obj as Template).Getfile;
 
             if (temp == null)
             {
@@ -92,7 +91,7 @@ namespace FirstProject
                 if (await DisplayAlert("Delete", "Вы действительно хотите удалить Файл/Папку?   "+temp.Name, "Yes", "No"))
                 {
 
-                    if (PersonFile.Delete(temp))
+                    if (PersonFile.Delete(obj as Template))
                     {
                         await DisplayAlert("", "Succeful", "Ok");
                     }
@@ -100,31 +99,19 @@ namespace FirstProject
             }
         }
 
-        private async void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_OnItemSelected(object sender, ItemTappedEventArgs e)
         {
-
-            File temp = ((Template)listView.SelectedItem).Getfile;
-            switch (await DisplayActionSheet(PersonFile.file.Name, "Cancel", null, "Open", "Delete"))
-            {
-                case "Open":
-                    if (!temp.IsFile)
+           File temp = ((Template)listViewMainPage.SelectedItem).Getfile;
+                    if (!temp.IsFile && temp!=null)
                     {
-                        listView.SelectedItem = null;
+                        listViewMainPage.SelectedItem = null;
                         Open(temp);
                     }
-                    else
-                    {
-                        await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
-                    }
-                    break;
-
-                case "Delete":
-
-                    Delete(temp);
-
-                    break;
+            else
+            {
+                await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
             }
-
+        
         }
 
         private void MenuItem_OnClicked(object sender, EventArgs e)
@@ -132,5 +119,24 @@ namespace FirstProject
             Device.BeginInvokeOnMainThread(
                 () => { DependencyService.Get<IPresenter>().clickButtonMenu(sender, e); });
         }
+
+        private void MenuItem_OnClickedContextMenu(object sender, EventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            Template template = menuItem.BindingContext as Template;
+            switch (menuItem.Text)
+            {
+                case "Open":
+                    Open(template);
+                    break;
+
+                case "Delete":
+                    
+                    Delete(template);
+                    break;
+            }
+            
+        }
+        
     }
 }
