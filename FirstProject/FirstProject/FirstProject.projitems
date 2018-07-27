@@ -23,4 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Template.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)StyleSheet1.css" />
+  </ItemGroup>
 </Project>

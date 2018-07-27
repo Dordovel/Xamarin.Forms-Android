@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Reflection;
 using FirstProject.Model;
 using Java.IO;
 using Xamarin.Forms;
+using Xamarin.Forms.StyleSheets;
 using View = Android.Views.View;
 
 namespace FirstProject
