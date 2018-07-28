@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Reflection;
+using System.IO;
+using FirstProject.MediaPlayer;
 using FirstProject.Model;
-using Java.IO;
 using Xamarin.Forms;
-using Xamarin.Forms.StyleSheets;
-using View = Android.Views.View;
+using File = Java.IO.File;
 
 namespace FirstProject
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage :ContentPage
     {
         private static Files PersonFile;
         private static ToolbarItem item;
+        public static ToolbarItem itemMusic;
 
-
+        #region Ctor
 
         public MainPage()
         {
@@ -22,22 +22,26 @@ namespace FirstProject
             PersonFile = new Files();
             Files.ResFile = PersonFile;
             Render();
-            
+
         }
 
         public MainPage(File file, string path)
         {
             InitializeComponent();
 
-                PersonFile = new Files(file, path);
+            PersonFile = new Files(file, path);
 
-                Files.ResFile = PersonFile;
+            Files.ResFile = PersonFile;
 
-                Count.Text = file.Name;
-            
-                Render();
+            Count.Text = file.Name;
+
+            Render();
 
         }
+
+        #endregion
+        
+        #region Render
 
         private void Render()
         {
@@ -49,9 +53,14 @@ namespace FirstProject
             }
 
             ToolbarItems.Add(item);
+            ToolbarItems.Add(itemMusic);
 
             listViewMainPage.ItemsSource = PersonFile.FilePrint();
         }
+
+        #endregion
+        
+        #region Toolbar
 
         private void toolbar()
         {
@@ -59,12 +68,85 @@ namespace FirstProject
             {
                 Text = "Новая папка",
                 Order = ToolbarItemOrder.Default,
-                Icon=new FileImageSource(){File="new_folder.png"}
+                Icon = new FileImageSource() { File = "new_folder.png" }
             };
             item.Clicked += MenuItem_OnClicked;
-            
+
+            itemMusic = new ToolbarItem()
+            {
+                Text = "Player",
+                Order = ToolbarItemOrder.Default,
+                Icon=new FileImageSource() { File="stop.png"}
+            };
+            itemMusic.Clicked += Item_Clicked; ;
         }
-        
+
+        #endregion
+
+        #region Event
+
+        #region ToolBarMenuEvent
+
+
+        private void MenuItem_OnClicked(object sender, EventArgs e)
+        {
+            Device.BeginInvokeOnMainThread(
+                () => { DependencyService.Get<IPresenter>().clickButtonMenu(sender, e); });
+        }
+
+       private void Item_Clicked(object sender, EventArgs e)
+        {
+            Device.BeginInvokeOnMainThread(
+                () => { DependencyService.Get<IPresenter>().Item_Clicked(sender, e); });
+        }
+
+        #endregion
+
+        private async void ListView_OnItemSelected(object sender, ItemTappedEventArgs e)
+        {
+            File temp = ((Template)listViewMainPage.SelectedItem).Getfile;
+            if (!temp.IsFile && temp != null)
+            {
+                listViewMainPage.SelectedItem = null;
+                Open(temp);
+            }
+            else if (Path.GetExtension(temp.AbsolutePath).Equals(".mp3"))
+            {
+                MediaPlayer.Media_player player = new Media_player(temp);
+                Media_player.Start();
+                listViewMainPage.SelectedItem = null;
+            }
+            else
+            {
+                await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
+            }
+
+        }
+
+
+
+        private void MenuItem_OnClickedContextMenu(object sender, EventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            Template template = menuItem.BindingContext as Template;
+            switch (menuItem.Text)
+            {
+                case "Open":
+                    Open(template);
+                    break;
+
+                case "Delete":
+
+                    Delete(template);
+                    break;
+            }
+
+        }
+
+
+        #endregion
+
+        #region FileSystemOperation
 
         private void Open(object obj)
         {
@@ -80,6 +162,9 @@ namespace FirstProject
 
         }
 
+
+
+
         public async void Delete(object obj)
         {
             File temp = (obj as Template).Getfile;
@@ -90,7 +175,7 @@ namespace FirstProject
             }
             else
             {
-                if (await DisplayAlert("Delete", "Вы действительно хотите удалить Файл/Папку?   "+temp.Name, "Yes", "No"))
+                if (await DisplayAlert("Delete", "Вы действительно хотите удалить Файл/Папку?   " + temp.Name, "Yes", "No"))
                 {
 
                     if (PersonFile.Delete(obj as Template))
@@ -101,44 +186,7 @@ namespace FirstProject
             }
         }
 
-        private async void ListView_OnItemSelected(object sender, ItemTappedEventArgs e)
-        {
-           File temp = ((Template)listViewMainPage.SelectedItem).Getfile;
-                    if (!temp.IsFile && temp!=null)
-                    {
-                        listViewMainPage.SelectedItem = null;
-                        Open(temp);
-                    }
-            else
-            {
-                await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
-            }
-        
-        }
-
-        private void MenuItem_OnClicked(object sender, EventArgs e)
-        {
-            Device.BeginInvokeOnMainThread(
-                () => { DependencyService.Get<IPresenter>().clickButtonMenu(sender, e); });
-        }
-
-        private void MenuItem_OnClickedContextMenu(object sender, EventArgs e)
-        {
-            var menuItem = sender as MenuItem;
-            Template template = menuItem.BindingContext as Template;
-            switch (menuItem.Text)
-            {
-                case "Open":
-                    Open(template);
-                    break;
-
-                case "Delete":
-                    
-                    Delete(template);
-                    break;
-            }
-            
-        }
+        #endregion
         
     }
 }

@@ -6,6 +6,7 @@
              xmlns:styleSheets="clr-namespace:Xamarin.Forms.StyleSheets;assembly=Xamarin.Forms.Core"
              x:Class="FirstProject.MainPage"
              Title="Xamarin"
+             BackgroundColor="SlateGray"
              >
 
     <ContentPage.Resources>
@@ -20,6 +21,7 @@
             </StackLayout>
             <ListView x:Name="listViewMainPage" 
                       SeparatorColor="#3D5AFE" 
+                      SeparatorVisibility="None"
                       HorizontalOptions="FillAndExpand"
                       ItemTapped="ListView_OnItemSelected"
                       >
@@ -36,7 +38,7 @@
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                     <Image Source="{Binding Image}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Start" VerticalOptions="Start"/>
                                     <StackLayout HorizontalOptions="FillAndExpand" Margin="48,0,0,0">
-                                        <Label x:Name="labelText" Text="{Binding FileName}" FontSize="12" HorizontalOptions="Start" />
+                                        <Label x:Name="labelText" Text="{Binding FileName}" FontSize="14" HorizontalOptions="Start" TextColor="#311B92" />
                                     </StackLayout>
                                 </Grid>
                             </ViewCell.View>

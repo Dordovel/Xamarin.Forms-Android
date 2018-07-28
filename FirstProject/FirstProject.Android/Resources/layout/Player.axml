@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="350dp">
+    <TextView
+        android:id="@+id/Performer"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#F44336"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/MusicName"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp" />
+    <TextView
+        android:id="@+id/Aulbum_Year"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#F44336"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/Gengre"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/Bitreit"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp" />
+    <SeekBar
+        android:min="0"
+        android:layout_height="50dp"
+        android:id="@+id/duration"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="60dp"
+        android:layout_width="match_parent">
+        <ImageButton
+            android:background="@drawable/play_button"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="180dp"
+            android:id="@+id/buttonPlay" />
+        <ImageButton
+            android:background="@drawable/pause_button"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="35dp"
+            android:id="@+id/buttonPause" />
+    </LinearLayout>
+</LinearLayout>

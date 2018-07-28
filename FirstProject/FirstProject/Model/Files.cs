@@ -55,6 +55,8 @@ namespace FirstProject.Model
 
         }
 
+        
+
         public ObservableCollection<Template> FilePrint()
         {
             list.Clear();
