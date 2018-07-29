@@ -31,8 +31,8 @@
                             <ViewCell.ContextActions>
                                <MenuItem Text="Open" Clicked="MenuItem_OnClickedContextMenu" ></MenuItem>
                                 <MenuItem Text="Delete" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
-                                <MenuItem Text="Move" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
                                 <MenuItem Text="Copy" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
+                                <MenuItem Text="Move" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
                            </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

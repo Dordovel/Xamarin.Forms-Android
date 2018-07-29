@@ -14,18 +14,21 @@ namespace FirstProject.Model
 
         public File file { get; set; }
         public static Files ResFile { get; set; }
+        public static File Move_copy_file;
+        private static Template template;
 
         public Files()
         {
             file = new File("/");
-            Path = "/>";
+                Path = file.AbsolutePath;
+
             list = new ObservableCollection<Template>();
         }
 
         public Files(File file,string path)
         {
             this.file = file;
-            Path = path;
+            Path = file.AbsolutePath;
 
             list = new ObservableCollection<Template>();
         }
@@ -104,13 +107,10 @@ namespace FirstProject.Model
         {
             try
             {
-
-                list.Remove(template);
-
                 switch (template.Getfile.IsDirectory)
                 {
                     case true:
-                        Directory.Delete(template.Getfile.Path);
+                       DeleteDirectory(template.Getfile);
                         break;
                     case false:
                         System.IO.File.Delete(template.Getfile.Path);
@@ -118,10 +118,88 @@ namespace FirstProject.Model
                         break;
                 }
 
+                list.Remove(template);
+
             }
             catch (IOException e)
             {
                 return false;
+            }
+
+            return true;
+        }
+
+        private void DeleteDirectory(File tempFile)
+        {
+            foreach (var VARIABLE in tempFile.ListFiles())
+            {
+                if (VARIABLE.IsDirectory)
+                {
+                    DeleteDirectory(VARIABLE);
+                }
+                else
+                {
+                    System.IO.File.Delete(VARIABLE.AbsolutePath);
+                }
+            }
+
+            if (tempFile.Exists())
+            {
+                Directory.Delete(tempFile.AbsolutePath);
+            }
+        }
+
+        public bool Copy(Template template)
+        {
+            Move_copy_file = template.Getfile;
+            Files.template = template;
+            return false;
+        }
+
+        public bool Move(Template template)
+        {
+            Move_copy_file = template.Getfile;
+            Files.template = template;
+            list.Remove(template);
+            return true;
+        }
+
+        public bool Paste(File temp)
+        {
+            bool flag = false;
+            if (Move_copy_file.IsFile)
+            {
+                System.IO.File.Copy(Move_copy_file.AbsolutePath, temp.AbsolutePath + "/" + Move_copy_file.Name);
+            }
+            else if (Move_copy_file.IsDirectory)
+            {
+                string path = temp.AbsolutePath + "/" + Move_copy_file.Name;
+
+               
+                new DirectoryInfo(temp.AbsolutePath).CreateSubdirectory(Move_copy_file.Name);
+                File newDirectory=new File(path);
+                if (newDirectory.Exists()) { }
+
+                flag=CopyDirectory(newDirectory);
+            }
+
+            if (flag)
+            {
+                Template tep = template;
+                tep.Getfile = temp;
+                ResFile.list.Add(tep);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CopyDirectory(File tempFile)
+        {
+            foreach (var VARIABLE in Move_copy_file.ListFiles())
+            {
+                Move_copy_file=VARIABLE;
+                Paste(tempFile);
             }
 
             return true;

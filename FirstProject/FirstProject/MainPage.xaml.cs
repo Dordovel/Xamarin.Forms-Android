@@ -12,6 +12,7 @@ namespace FirstProject
         private static Files PersonFile;
         private static ToolbarItem item;
         public static ToolbarItem itemMusic;
+        public static ToolbarItem paste;
 
         #region Ctor
 
@@ -46,14 +47,8 @@ namespace FirstProject
         private void Render()
         {
             Count.Text = Files.Path;
-
-            if (item == null)
-            {
+            
                 toolbar();
-            }
-
-            ToolbarItems.Add(item);
-            ToolbarItems.Add(itemMusic);
 
             listViewMainPage.ItemsSource = PersonFile.FilePrint();
         }
@@ -64,6 +59,18 @@ namespace FirstProject
 
         private void toolbar()
         {
+            if (Files.Move_copy_file != null)
+            {
+                paste = new ToolbarItem()
+                {
+                    Text = "Вставка",
+                    Order = ToolbarItemOrder.Default
+                };
+                paste.Clicked += Item_Clicked1;
+
+                ToolbarItems.Add(paste);
+            }
+
             item = new ToolbarItem()
             {
                 Text = "Новая папка",
@@ -78,7 +85,17 @@ namespace FirstProject
                 Order = ToolbarItemOrder.Default,
                 Icon=new FileImageSource() { File="stop.png"}
             };
-            itemMusic.Clicked += Item_Clicked; ;
+            itemMusic.Clicked += Item_Clicked;
+
+            ToolbarItems.Add(item);
+            ToolbarItems.Add(itemMusic);
+
+
+        }
+
+        private void Item_Clicked1(object sender, EventArgs e)
+        {
+            PersonFile.Paste(PersonFile.file);
         }
 
         #endregion
@@ -127,6 +144,7 @@ namespace FirstProject
 
         private void MenuItem_OnClickedContextMenu(object sender, EventArgs e)
         {
+            Files files = new Files();
             var menuItem = sender as MenuItem;
             Template template = menuItem.BindingContext as Template;
             switch (menuItem.Text)
@@ -138,6 +156,14 @@ namespace FirstProject
                 case "Delete":
 
                     Delete(template);
+                    break;
+
+                case "Move":
+                    files.Move(template);
+                    break;
+
+                case "Copy":
+                    files.Copy(template);
                     break;
             }
 
@@ -151,7 +177,7 @@ namespace FirstProject
         private void Open(object obj)
         {
             File temp = obj as File;
-            Files.Path += temp.Name + "/>";
+            Files.Path = temp.AbsolutePath;
 
             if (temp == null)
             {
