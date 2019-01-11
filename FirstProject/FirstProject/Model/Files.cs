@@ -19,8 +19,8 @@ namespace FirstProject.Model
 
         public Files()
         {
-            file = new File("/");
-                Path = file.AbsolutePath;
+            file = new File("/storage/emulated/0");
+            Path = file.AbsolutePath;
 
             list = new ObservableCollection<Template>();
         }
