@@ -122,11 +122,11 @@ namespace FirstProject.Droid
             if (MediaPlayer.Media_player.isPlay)
             {
                 musicDialog.Show();
-                label.Text ="Исполнитель "+MediaPlayer.Media_player.Tags()["Performer"];
-                performer.Text ="Название "+MediaPlayer.Media_player.Tags()["Title"];
-                Album.Text = "Альбом " + MediaPlayer.Media_player.Tags()["Album"]+" "+ MediaPlayer.Media_player.Tags()["Year"];
-                Gengres.Text = "Жанр " + MediaPlayer.Media_player.Tags()["Gengres"];
-                Bitreit.Text = "Битрейт " + MediaPlayer.Media_player.Tags()["Bitreit"];
+                label.Text ="Исполнитель: \n\t\t"+MediaPlayer.Media_player.Tags()["Performer"];
+                performer.Text = "Название: \n\t\t" + MediaPlayer.Media_player.Tags()["Title"];
+                Album.Text = "Альбом: \n\t\t" + MediaPlayer.Media_player.Tags()["Album"]+" "+ MediaPlayer.Media_player.Tags()["Year"];
+                Gengres.Text = "Жанр: \n\t\t" + MediaPlayer.Media_player.Tags()["Gengres"];
+                Bitreit.Text = "Битрейт: \n\t\t" + MediaPlayer.Media_player.Tags()["Bitreit"];
                 seekBar.Max = MediaPlayer.Media_player.Duration;
                 seekBar.StopTrackingTouch += SeekBar_StopTrackingTouch;
                    new Thread(tread).Start();

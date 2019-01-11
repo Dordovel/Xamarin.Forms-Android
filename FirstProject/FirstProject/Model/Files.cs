@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Xml.Xsl;
 using File = Java.IO.File;
 
 namespace FirstProject.Model
@@ -33,38 +34,13 @@ namespace FirstProject.Model
             list = new ObservableCollection<Template>();
         }
 
-        private File[] SortFile(File [] listFile)
-        {
-
-            for (int i = 0; i < listFile.Length; i++)
-            {
-                for (int g = listFile.Length - 1; g > i; g--)
-                {
-
-                    if (listFile[g].IsDirectory)
-                    {
-
-                        File temp = listFile[g];
-
-                        listFile[g] = listFile[g - 1];
-
-                        listFile[g - 1] = temp;
-
-                    }
-
-                }
-            }
-            return listFile;
-
-        }
-
-        
+       
 
         public ObservableCollection<Template> FilePrint()
         {
             list.Clear();
 
-            foreach (var VARIABLE in SortFile(file.ListFiles()))
+            foreach (var VARIABLE in file.ListFiles())
             {
                 if (VARIABLE.IsDirectory)
                 {

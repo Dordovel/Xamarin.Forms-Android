@@ -38,7 +38,7 @@
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                     <Image Source="{Binding Image}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Start" VerticalOptions="Start"/>
                                     <StackLayout HorizontalOptions="FillAndExpand" Margin="48,0,0,0">
-                                        <Label x:Name="labelText" Text="{Binding FileName}" FontSize="14" HorizontalOptions="Start" TextColor="#F44336" />
+                                        <Label x:Name="labelText" Text="{Binding FileName}" FontSize="14" HorizontalOptions="Start" TextColor="Yellow" />
                                     </StackLayout>
                                 </Grid>
                             </ViewCell.View>
