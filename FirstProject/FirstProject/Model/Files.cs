@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Xml.Xsl;
+using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using File = Java.IO.File;
 
 namespace FirstProject.Model
@@ -20,7 +20,15 @@ namespace FirstProject.Model
 
         public Files()
         {
-            file = new File("/storage/emulated/0");
+            if (getAndroidVersion() > 7)
+            {
+                file = new File("/storage/emulated/0");
+            }
+            else
+            {
+                file = new File("/");
+            }
+
             Path = file.AbsolutePath;
 
             list = new ObservableCollection<Template>();
@@ -32,8 +40,14 @@ namespace FirstProject.Model
             Path = file.AbsolutePath;
 
             list = new ObservableCollection<Template>();
+
         }
 
+
+        public int getAndroidVersion()
+        {
+            return Convert.ToInt32(Android.OS.Build.VERSION.Release);
+        }
        
 
         public ObservableCollection<Template> FilePrint()
