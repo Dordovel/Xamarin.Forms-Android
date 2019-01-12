@@ -5,12 +5,15 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.V4.App;
+using Android.Transitions;
 using Android.Views;
 using Android.Widget;
 using FirstProject.Droid;
 using FirstProject.Model;
+using Java.Net;
 using static FirstProject.Droid.Resource.Layout;
 using Button = Android.Widget.Button;
+using Uri = Android.Net.Uri;
 using View = Android.Views.View;
 
 
@@ -26,7 +29,8 @@ namespace FirstProject.Droid
         private static View musicViev;
         private static AlertDialog musicDialog;
         private static SeekBar seekBar;
-
+        private static View picturesView;
+        private static AlertDialog picturesDialog;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -48,6 +52,7 @@ namespace FirstProject.Droid
 
             AlertDialogOpen();
             AlertDialogMusic();
+            AlertDialogImage();
             
         }
 
@@ -77,6 +82,16 @@ namespace FirstProject.Droid
 
             buttonPlay.Click += ButtonPlay_Click;
             buttonPause.Click += ButtonPause_Click;
+        }
+
+        private void AlertDialogImage()
+        { 
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+            LayoutInflater inflaer = LayoutInflater.From(this);
+            picturesView = inflaer.Inflate(Image, null);
+            builder.SetView(picturesView);
+            picturesDialog = builder.Create();
+            
         }
 
         private void ButtonPause_Click(object sender, EventArgs e)
@@ -132,6 +147,16 @@ namespace FirstProject.Droid
                    new Thread(tread).Start();
 
             }
+        }
+
+
+        public void ShowPictures(String Path)
+        {
+            ImageView image = picturesView.FindViewById<ImageView>(Resource.Id.imageView1);
+
+            picturesDialog.Show();
+
+            image.SetImageURI(Uri.Parse(Path));
         }
 
         private void SeekBar_StopTrackingTouch(object sender, SeekBar.StopTrackingTouchEventArgs e)

@@ -93,9 +93,12 @@ namespace FirstProject
 
         }
 
-        private void Item_Clicked1(object sender, EventArgs e)
+        private async void Item_Clicked1(object sender, EventArgs e)
         {
-            PersonFile.Paste(PersonFile.file);
+            if (!PersonFile.Paste(PersonFile.getTemplate()))
+            { 
+                await DisplayAlert("Error", "Ошибка при копировании файла "+PersonFile.getTemplate().Getfile.Name, "Ok");
+            }
         }
 
         #endregion
@@ -127,15 +130,34 @@ namespace FirstProject
                 listViewMainPage.SelectedItem = null;
                 Open(temp);
             }
-            else if (Path.GetExtension(temp.AbsolutePath).Equals(".mp3"))
+
+            if (temp.IsFile)
             {
-                MediaPlayer.Media_player player = new Media_player(temp);
-                Media_player.Start();
-                listViewMainPage.SelectedItem = null;
-            }
-            else
-            {
+                for (int i = 0; i < Media_player.supportedMediaFormats.Length; i++)
+                {
+                    if (Path.GetExtension(temp.AbsolutePath).Contains(Media_player.supportedMediaFormats[i].ToLower()))
+                    {
+                        MediaPlayer.Media_player player = new Media_player(temp);
+                        Media_player.Start();
+                        listViewMainPage.SelectedItem = null;
+                        return;
+                    }
+
+                }
+
+                for (int i = 0; i < Files.imageSupported.Length; i++)
+                {
+                    if (Path.GetExtension(temp.AbsolutePath).Contains(Files.imageSupported[i].ToLower()))
+                    {
+                        Device.BeginInvokeOnMainThread(
+                            () => { DependencyService.Get<IPresenter>().ShowPictures(temp.AbsolutePath); });
+
+                            return;
+                    }
+                }
+
                 await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
+
             }
 
         }
@@ -207,6 +229,11 @@ namespace FirstProject
                     if (PersonFile.Delete(obj as Template))
                     {
                         await DisplayAlert("", "Succeful", "Ok");
+                    }
+
+                    else
+                    {
+                        await DisplayAlert("", "Error", "Ok");
                     }
                 }
             }

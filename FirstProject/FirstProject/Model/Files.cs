@@ -18,6 +18,15 @@ namespace FirstProject.Model
         public static File Move_copy_file;
         private static Template template;
 
+        public static readonly string[] imageSupported = new String[5]
+        {
+            "BMP",
+            "GIF",
+            "JPEG",
+            "PNG",
+            "JPG"
+        };
+
         public Files()
         {
             if (getAndroidVersion() > 7)
@@ -41,6 +50,12 @@ namespace FirstProject.Model
 
             list = new ObservableCollection<Template>();
 
+        }
+
+
+        public Template getTemplate()
+        {
+            return template;
         }
 
 
@@ -154,37 +169,42 @@ namespace FirstProject.Model
             return true;
         }
 
-        public bool Paste(File temp)
+        public bool Paste(Template template)
         {
-            bool flag = false;
+
+            string path = template.Getfile.AbsolutePath + "/" + Move_copy_file.Name;
+
             if (Move_copy_file.IsFile)
             {
-                System.IO.File.Copy(Move_copy_file.AbsolutePath, temp.AbsolutePath + "/" + Move_copy_file.Name);
+                try
+                {
+
+                    System.IO.File.Copy(Move_copy_file.AbsolutePath, path);
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
+                Delete(template);
             }
             else if (Move_copy_file.IsDirectory)
             {
-                string path = temp.AbsolutePath + "/" + Move_copy_file.Name;
-
-               
-                new DirectoryInfo(temp.AbsolutePath).CreateSubdirectory(Move_copy_file.Name);
+                new DirectoryInfo(template.Getfile.AbsolutePath).CreateSubdirectory(Move_copy_file.Name);
                 File newDirectory=new File(path);
                 if (newDirectory.Exists()) { }
 
-                flag=CopyDirectory(newDirectory);
+                CopyDirectory(template);
             }
 
-            if (flag)
-            {
-                Template tep = template;
-                tep.Getfile = temp;
-                ResFile.list.Add(tep);
-                return true;
-            }
+            ResFile.list.Add(template);
 
-            return false;
+            return true;
+
         }
 
-        private bool CopyDirectory(File tempFile)
+        private bool CopyDirectory(Template tempFile)
         {
             foreach (var VARIABLE in Move_copy_file.ListFiles())
             {

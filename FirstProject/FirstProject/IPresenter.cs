@@ -10,7 +10,6 @@ namespace FirstProject
     {
         void clickButtonMenu(object sender, EventArgs e);
         void Item_Clicked(object sender, EventArgs e);
-        
-
+        void ShowPictures(String path);
     }
 }

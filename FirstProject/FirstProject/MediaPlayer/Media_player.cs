@@ -11,9 +11,15 @@ namespace FirstProject.MediaPlayer
     {
         private static File music_File;
         private static Android.Media.MediaPlayer player;
-        public static bool isPlay=false;
-        public static bool isPause=false;
-        public static bool isStop=false;
+        public static bool isPlay = false;
+        public static bool isPause = false;
+        public static bool isStop = false;
+
+        public static readonly String []supportedMediaFormats =new String[2]
+        {
+            "FLAC",
+            "MP3"
+        };
         
 
         public static int Duration;
