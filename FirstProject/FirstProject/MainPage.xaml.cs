@@ -97,8 +97,10 @@ namespace FirstProject
         {
             if (!PersonFile.Paste(PersonFile.getTemplate()))
             { 
-                await DisplayAlert("Error", "Ошибка при копировании файла "+PersonFile.getTemplate().Getfile.Name, "Ok");
+                await DisplayAlert("Error", "Ошибка при копировании файла "+PersonFile.getTemplate().Getfile.AbsolutePath, "Ok");
             }
+
+            ToolbarItems.Remove(paste);
         }
 
         #endregion
@@ -228,7 +230,7 @@ namespace FirstProject
 
                     if (PersonFile.Delete(obj as Template))
                     {
-                        await DisplayAlert("", "Succeful", "Ok");
+                        await DisplayAlert("", temp.Name+"  Deleted", "Ok");
                     }
 
                     else

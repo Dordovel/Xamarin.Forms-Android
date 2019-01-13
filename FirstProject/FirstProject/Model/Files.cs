@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using Xamarin.Forms;
-using Xamarin.Forms.Internals;
+using javaIO=Java.IO;
 using File = Java.IO.File;
 
 namespace FirstProject.Model
@@ -17,6 +16,7 @@ namespace FirstProject.Model
         public static Files ResFile { get; set; }
         public static File Move_copy_file;
         private static Template template;
+        private static bool move;
 
         public static readonly string[] imageSupported = new String[5]
         {
@@ -53,6 +53,25 @@ namespace FirstProject.Model
         }
 
 
+        public File[] sort(File [] fileList)
+        {
+            int index = 0;
+
+            for (int a = 0; a < fileList.Length; ++a)
+            {
+                if (fileList[a].IsDirectory)
+                {
+                    File temp = fileList[index];
+                    fileList[index] = fileList[a];
+                    fileList[a] = temp;
+                    ++index;
+                }
+            }
+
+            return fileList;
+
+        }
+
         public Template getTemplate()
         {
             return template;
@@ -68,8 +87,8 @@ namespace FirstProject.Model
         public ObservableCollection<Template> FilePrint()
         {
             list.Clear();
-
-            foreach (var VARIABLE in file.ListFiles())
+            
+            foreach (var VARIABLE in sort(file.ListFiles()))
             {
                 if (VARIABLE.IsDirectory)
                 {
@@ -110,32 +129,30 @@ namespace FirstProject.Model
 
         public bool Delete(Template template)
         {
-            try
-            {
+
+            bool flag = false;
                 switch (template.Getfile.IsDirectory)
                 {
                     case true:
                        DeleteDirectory(template.Getfile);
                         break;
                     case false:
-                        System.IO.File.Delete(template.Getfile.Path);
+                        File temp = template.Getfile;
+
+                        flag=temp.Delete();
 
                         break;
                 }
 
                 list.Remove(template);
-
-            }
-            catch (IOException e)
-            {
-                return false;
-            }
-
-            return true;
+            
+            return flag;
         }
 
-        private void DeleteDirectory(File tempFile)
+        private bool DeleteDirectory(File tempFile)
         {
+            bool flag = false;
+
             foreach (var VARIABLE in tempFile.ListFiles())
             {
                 if (VARIABLE.IsDirectory)
@@ -144,7 +161,8 @@ namespace FirstProject.Model
                 }
                 else
                 {
-                    System.IO.File.Delete(VARIABLE.AbsolutePath);
+                    File file = VARIABLE;
+                    flag=file.Delete();
                 }
             }
 
@@ -152,6 +170,8 @@ namespace FirstProject.Model
             {
                 Directory.Delete(tempFile.AbsolutePath);
             }
+
+            return flag;
         }
 
         public bool Copy(Template template)
@@ -166,20 +186,33 @@ namespace FirstProject.Model
             Move_copy_file = template.Getfile;
             Files.template = template;
             list.Remove(template);
+            move = true;
             return true;
         }
 
         public bool Paste(Template template)
         {
-
-            string path = template.Getfile.AbsolutePath + "/" + Move_copy_file.Name;
+            string path = Path + "/" + Move_copy_file.Name;
 
             if (Move_copy_file.IsFile)
             {
                 try
                 {
 
-                    System.IO.File.Copy(Move_copy_file.AbsolutePath, path);
+                   javaIO.InputStream source=new javaIO.FileInputStream(Move_copy_file.AbsolutePath);
+                    javaIO.OutputStream dest=new javaIO.FileOutputStream(path);
+                    
+                    byte[] buffer=new byte[1024];
+
+                    int length;
+
+                    while ((length = source.Read(buffer)) > 0)
+                    {
+                        dest.Write(buffer,0,length);
+                    }
+
+                    source.Close();
+                    dest.Close();
 
                 }
                 catch (Exception e)
@@ -187,7 +220,11 @@ namespace FirstProject.Model
                     return false;
                 }
 
-                Delete(template);
+                if (move)
+                {
+                    Delete(template);
+                    move = false;
+                }
             }
             else if (Move_copy_file.IsDirectory)
             {
@@ -198,7 +235,11 @@ namespace FirstProject.Model
                 CopyDirectory(template);
             }
 
+            template.Getfile = new File(path);
+
             ResFile.list.Add(template);
+
+            Move_copy_file = null;
 
             return true;
 

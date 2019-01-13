@@ -108,7 +108,7 @@ namespace FirstProject.MediaPlayer
 
             Dictionary<string, string> MusicTags = new Dictionary<string, string>()
             {
-                {"Title", tag.Tag.Title},
+                {"Title", music_File.Name},
                 {"Performer", String.Join(", ", tag.Tag.Performers)},
                 {"Album", tag.Tag.Album},
                 {"Year", (tag.Tag.Year).ToString()},
