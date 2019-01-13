@@ -129,9 +129,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\stop_button.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\pause_button.png" />
   </ItemGroup>
   <ItemGroup>
