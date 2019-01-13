@@ -79,18 +79,19 @@ namespace FirstProject
             };
             item.Clicked += MenuItem_OnClicked;
 
+
             itemMusic = new ToolbarItem()
             {
                 Text = "Player",
                 Order = ToolbarItemOrder.Primary,
-                Icon=new FileImageSource() { File="stop.png"}
+                Icon = new FileImageSource() { File = "music_play.png" }
             };
             itemMusic.Clicked += Item_Clicked;
 
-            ToolbarItems.Add(item);
             ToolbarItems.Add(itemMusic);
 
-
+            ToolbarItems.Add(item);
+            
         }
 
         private async void Item_Clicked1(object sender, EventArgs e)
@@ -153,12 +154,13 @@ namespace FirstProject
                     {
                         Device.BeginInvokeOnMainThread(
                             () => { DependencyService.Get<IPresenter>().ShowPictures(temp.AbsolutePath); });
-
-                            return;
+                        listViewMainPage.SelectedItem = null;
+                        return;
                     }
                 }
 
                 await DisplayAlert("Error", "Эта функция на данный момент не доступна", "Ok");
+                listViewMainPage.SelectedItem = null;
 
             }
 

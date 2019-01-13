@@ -86,7 +86,6 @@ namespace FirstProject.MediaPlayer
                 isPlay = true;
                 isPause = false;
                 isStop = false;
-                MainPage.itemMusic.Icon=new FileImageSource(){File="play.png"};
             }
         }
 
@@ -97,7 +96,6 @@ namespace FirstProject.MediaPlayer
                 isPlay = false;
                 player.Stop();
                 player.Dispose();
-                MainPage.itemMusic.Icon = new FileImageSource() { File = "stop.png" };
             }
         }
 

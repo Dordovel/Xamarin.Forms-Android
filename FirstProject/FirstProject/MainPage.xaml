@@ -6,7 +6,6 @@
              xmlns:styleSheets="clr-namespace:Xamarin.Forms.StyleSheets;assembly=Xamarin.Forms.Core"
              x:Class="FirstProject.MainPage"
              Title="Xamarin"
-             BackgroundColor="#245A64"
              >
 
     <ContentPage.Resources>
