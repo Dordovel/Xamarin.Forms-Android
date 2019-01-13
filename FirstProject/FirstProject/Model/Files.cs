@@ -156,14 +156,16 @@ namespace FirstProject.Model
 
         public bool Delete(Template template)
         {
-
             bool flag = false;
                 switch (template.Getfile.IsDirectory)
                 {
                     case true:
-                       DeleteDirectory(template.Getfile);
+                       flag=DeleteDirectory(template.Getfile);
+
                         break;
+
                     case false:
+
                         File temp = template.Getfile;
 
                         flag=temp.Delete();
@@ -171,35 +173,42 @@ namespace FirstProject.Model
                         break;
                 }
 
+            if (flag)
+            {
                 list.Remove(template);
-            
+            }
+
             return flag;
         }
 
-        private bool DeleteDirectory(File tempFile)
+        private bool DeleteDirectory(File file)
         {
-            bool flag = false;
 
-            foreach (var VARIABLE in tempFile.ListFiles())
+            int size = file.ListFiles().Length;
+            
+            if (size > 0)
             {
-                if (VARIABLE.IsDirectory)
+                foreach (var VARIABLE in file.ListFiles())
                 {
-                    DeleteDirectory(VARIABLE);
-                }
-                else
-                {
-                    File file = VARIABLE;
-                    flag=file.Delete();
+                    if (VARIABLE.IsDirectory)
+                    {
+                        DeleteDirectory(VARIABLE);
+                    }
+
+                    else
+                    {
+                        File temp = VARIABLE;
+
+                        temp.Delete();
+                    }
                 }
             }
+                File t = file;
 
-            if (tempFile.Exists())
-            {
-                Directory.Delete(tempFile.AbsolutePath);
-            }
-
-            return flag;
+                return  t.Delete();
+            
         }
+
 
         public bool Copy(Template template)
         {
