@@ -175,10 +175,6 @@ namespace FirstProject
             Template template = menuItem.BindingContext as Template;
             switch (menuItem.Text)
             {
-                case "Open":
-                    Open(template);
-                    break;
-
                 case "Delete":
 
                     Delete(template);

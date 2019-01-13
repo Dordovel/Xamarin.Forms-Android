@@ -29,10 +29,9 @@
                    <DataTemplate >
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem  Text="Open" Clicked="MenuItem_OnClickedContextMenu" ></MenuItem>
-                                <MenuItem Text="Copy" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
-                                <MenuItem Text="Move" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
-                                <MenuItem Text="Delete" Clicked="MenuItem_OnClickedContextMenu"></MenuItem>
+                                <MenuItem Text="Copy" Clicked="MenuItem_OnClickedContextMenu" Icon="copy.png"></MenuItem>
+                                <MenuItem Text="Move" Clicked="MenuItem_OnClickedContextMenu" Icon="move.png"></MenuItem>
+                                <MenuItem Text="Delete" Clicked="MenuItem_OnClickedContextMenu" Icon="delete.png"></MenuItem>
                            </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
