@@ -64,7 +64,7 @@ namespace FirstProject
                 paste = new ToolbarItem()
                 {
                     Text = "Вставка",
-                    Order = ToolbarItemOrder.Default
+                    Order = ToolbarItemOrder.Primary
                 };
                 paste.Clicked += Item_Clicked1;
 
@@ -74,7 +74,7 @@ namespace FirstProject
             item = new ToolbarItem()
             {
                 Text = "Новая папка",
-                Order = ToolbarItemOrder.Default,
+                Order = ToolbarItemOrder.Primary,
                 Icon = new FileImageSource() { File = "new_folder.png" }
             };
             item.Clicked += MenuItem_OnClicked;
@@ -82,7 +82,7 @@ namespace FirstProject
             itemMusic = new ToolbarItem()
             {
                 Text = "Player",
-                Order = ToolbarItemOrder.Default,
+                Order = ToolbarItemOrder.Primary,
                 Icon=new FileImageSource() { File="stop.png"}
             };
             itemMusic.Clicked += Item_Clicked;

@@ -152,7 +152,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\image.xml" />
+    <AndroidResource Include="Resources\drawable\imag.png" />
   </ItemGroup>
   <Import Project="..\FirstProject\FirstProject.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

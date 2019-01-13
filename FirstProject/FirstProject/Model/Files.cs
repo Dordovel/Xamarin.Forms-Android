@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using FirstProject.MediaPlayer;
 using javaIO=Java.IO;
 using File = Java.IO.File;
 
@@ -87,22 +88,48 @@ namespace FirstProject.Model
         public ObservableCollection<Template> FilePrint()
         {
             list.Clear();
-            
+
+            bool flag=false;
+
             foreach (var VARIABLE in sort(file.ListFiles()))
             {
                 if (VARIABLE.IsDirectory)
                 {
-                    list.Add(new Template() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png" });
+                    list.Add(new Template() {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png"});
                 }
                 else if (VARIABLE.IsFile)
                 {
-                    if (System.IO.Path.GetExtension(VARIABLE.ToString()).Equals(".mp3"))
+                    for (int i = 0; i < Media_player.supportedMediaFormats.Length; i++)
                     {
-                        list.Add(new Template() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png" });
+                        if (System.IO.Path.GetExtension(VARIABLE.ToString())
+                            .Contains(Media_player.supportedMediaFormats[i].ToLower()))
+                        {
+                            list.Add(new Template()
+                                {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png"});
+                            flag = true;
+                        }
                     }
-                    else
+
+                    if (!flag)
                     {
-                        list.Add(new Template() { FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png" });
+                        for (int a = 0; a < imageSupported.Length; ++a)
+                        {
+                            if (System.IO.Path.GetExtension(VARIABLE.ToString())
+                                .Contains(imageSupported[a].ToLower()))
+                            {
+                                list.Add(new Template()
+                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "imag.png"});
+                                flag = true;
+                            }
+                        }
+
+                        if (!flag)
+                        {
+                            list.Add(new Template()
+                                {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png"});
+                        }
+
+                        flag = false;
                     }
                 }
             }
