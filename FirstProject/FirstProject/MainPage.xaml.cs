@@ -14,6 +14,12 @@ namespace FirstProject
         public static ToolbarItem itemMusic;
         public static ToolbarItem paste;
 
+        private Editor seachEdit;
+        private Label label;
+        StackLayout stackLayout = null;
+
+        private static bool SearchFlag=false;
+
         #region Ctor
 
         public MainPage()
@@ -50,7 +56,9 @@ namespace FirstProject
             
                 toolbar();
 
-            listViewMainPage.ItemsSource = PersonFile.FilePrint();
+            PersonFile.initialInitialize();
+
+            listViewMainPage.ItemsSource = PersonFile.getList();
         }
 
         #endregion
@@ -77,7 +85,14 @@ namespace FirstProject
                 Order = ToolbarItemOrder.Primary,
                 Icon = new FileImageSource() { File = "new_folder.png" }
             };
-            item.Clicked += MenuItem_OnClicked;
+
+            item.Clicked += MenuItem_OnClicked;item = new ToolbarItem()
+            {
+                Text = "Поиск",
+                Order = ToolbarItemOrder.Primary,
+                Icon = new FileImageSource() { File = "search.png" }
+            };
+            item.Clicked += ItemOnClicked;
 
 
             itemMusic = new ToolbarItem()
@@ -88,10 +103,45 @@ namespace FirstProject
             };
             itemMusic.Clicked += Item_Clicked;
 
+
             ToolbarItems.Add(itemMusic);
 
             ToolbarItems.Add(item);
             
+        }
+
+        private void ItemOnClicked(object sender, EventArgs e)
+        {
+
+            if (!SearchFlag)
+            {
+                stackLayout=new StackLayout();
+
+                Grid stack = new Grid();
+
+                seachEdit = new Editor() {Text = "", AutoSize = EditorAutoSizeOption.Disabled};
+
+                Button button = new Button() {Text = "Search", HorizontalOptions = LayoutOptions.End};
+                button.Clicked += Button_Search_Clicked;
+
+                label = new Label() {TextColor = Color.AliceBlue};
+                label.HorizontalOptions = LayoutOptions.Start;
+
+                stack.Children.Add(seachEdit);
+
+                stack.Children.Add(button);
+                stackLayout.Children.Add(stack);
+                stackLayout.Children.Add(label);
+
+                Head.Children.Add(stackLayout);
+
+                SearchFlag = true;
+            }
+            else
+            {
+                Head.Children.Remove(stackLayout);
+                SearchFlag = false;
+            }
         }
 
         private async void Item_Clicked1(object sender, EventArgs e)
@@ -102,6 +152,17 @@ namespace FirstProject
             }
 
             ToolbarItems.Remove(paste);
+        }
+        
+
+        private void Button_Search_Clicked(object sender, EventArgs e)
+        {
+            if (seachEdit.Text!="")
+            {
+                PersonFile.Search(seachEdit.Text, label);
+
+                listViewMainPage.ItemsSource = PersonFile.getList();
+            }
         }
 
         #endregion

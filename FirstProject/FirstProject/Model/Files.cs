@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using Android.OS;
 using FirstProject.MediaPlayer;
+using Java.Util.Concurrent;
+using TagLib.Riff;
+using Xamarin.Forms;
+using Debug = System.Diagnostics.Debug;
+using Exception = System.Exception;
 using javaIO=Java.IO;
 using File = Java.IO.File;
+using String = System.String;
 
 namespace FirstProject.Model
 {
@@ -42,6 +50,7 @@ namespace FirstProject.Model
             Path = file.AbsolutePath;
 
             list = new ObservableCollection<Template>();
+            
         }
 
         public Files(File file,string path)
@@ -83,59 +92,102 @@ namespace FirstProject.Model
         {
             return Convert.ToInt32(Android.OS.Build.VERSION.Release);
         }
-       
 
-        public ObservableCollection<Template> FilePrint()
+
+        public void Search(String fileName,Label label)
+        {
+            File[] temp = new File[1000];
+
+            int count = 0;
+
+            foreach (File f in file.ListFiles())
+            {
+                if (f.Name.ToLower().Contains(fileName.ToLower()))
+                {
+                    if (count < temp.Length)
+                    {
+                        temp[count++] = f;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            label.Text = " Найдено " + count;
+            
+           generateList(temp);
+           
+        }
+
+        public ObservableCollection<Template> getList()
+        {
+            return this.list;
+        }
+        
+
+        public void initialInitialize()
+        {
+            Editor edit=null;
+            generateList(file.ListFiles());
+        }
+
+
+        private void generateList(File[] array)
         {
             list.Clear();
 
-            bool flag=false;
+            bool flag = false;
 
-            foreach (var VARIABLE in sort(file.ListFiles()))
+            foreach (File VARIABLE in array)
             {
-                if (VARIABLE.IsDirectory)
+                if (VARIABLE != null)
                 {
-                    list.Add(new Template() {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png"});
-                }
-                else if (VARIABLE.IsFile)
-                {
-                    for (int i = 0; i < Media_player.supportedMediaFormats.Length; i++)
-                    {
-                        if (System.IO.Path.GetExtension(VARIABLE.ToString())
-                            .Contains(Media_player.supportedMediaFormats[i].ToLower()))
-                        {
-                            list.Add(new Template()
-                                {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png"});
-                            flag = true;
-                        }
-                    }
 
-                    if (!flag)
+                    if (VARIABLE.IsDirectory)
                     {
-                        for (int a = 0; a < imageSupported.Length; ++a)
+                        list.Add(new Template() {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png"});
+                    }
+                    else if (VARIABLE.IsFile)
+                    {
+                        for (int i = 0; i < Media_player.supportedMediaFormats.Length; i++)
                         {
                             if (System.IO.Path.GetExtension(VARIABLE.ToString())
-                                .Contains(imageSupported[a].ToLower()))
+                                .Contains(Media_player.supportedMediaFormats[i].ToLower()))
                             {
                                 list.Add(new Template()
-                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "imag.png"});
+                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png"});
                                 flag = true;
                             }
                         }
 
                         if (!flag)
                         {
-                            list.Add(new Template()
-                                {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png"});
-                        }
+                            for (int a = 0; a < imageSupported.Length; ++a)
+                            {
+                                if (System.IO.Path.GetExtension(VARIABLE.ToString())
+                                    .Contains(imageSupported[a].ToLower()))
+                                {
+                                    list.Add(new Template()
+                                        {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "imag.png"});
+                                    flag = true;
+                                }
+                            }
 
-                        flag = false;
+                            if (!flag)
+                            {
+                                list.Add(new Template()
+                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png"});
+                            }
+
+                            flag = false;
+                        }
                     }
                 }
             }
-
-            return list;
         }
+
 
         public bool NewDirectory(string DirectoryName)
         {

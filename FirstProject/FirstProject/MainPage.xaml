@@ -14,7 +14,7 @@
 
     <ContentPage.Content>
         <StackLayout >
-            <StackLayout BackgroundColor="DarkSlateGray">
+            <StackLayout BackgroundColor="DarkSlateGray" x:Name="Head">
                 <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="#FF1744"
                FontSize="12" />
             </StackLayout>
