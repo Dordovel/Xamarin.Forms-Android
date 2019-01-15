@@ -145,7 +145,7 @@ namespace FirstProject.Model
 
             DateTime time; 
 
-            foreach (File VARIABLE in array)
+            foreach (File VARIABLE in sort(array))
             {
                 if (VARIABLE != null)
                 {
