@@ -22,7 +22,7 @@
         android:layout_marginLeft="40dp" />
     <TextView
         android:id="@+id/Aulbum_Year"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_width="match_parent"
         android:textAlignment="center"
         android:layout_marginTop="20dp"
@@ -31,7 +31,7 @@
         android:textSize="18dp" />
     <TextView
         android:id="@+id/Gengre"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_width="match_parent"
         android:textAlignment="center"
         android:layout_marginTop="20dp"

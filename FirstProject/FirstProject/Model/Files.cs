@@ -140,14 +140,24 @@ namespace FirstProject.Model
 
             bool flag = false;
 
+            string size;
+            string createDate;
+
+            DateTime time; 
+
             foreach (File VARIABLE in array)
             {
                 if (VARIABLE != null)
                 {
 
+                    time= new FileInfo(VARIABLE.AbsolutePath).CreationTime;
+
+                    createDate = time.Day + "." + time.Month + "." + time.Year + "  ";
+                        size=((float)((int)VARIABLE.Length() / 100000)/10).ToString()+"   МБ";
+
                     if (VARIABLE.IsDirectory)
                     {
-                        list.Add(new Template() {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png"});
+                        list.Add(new Template() {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "folder.png",fileinfo = createDate});
                     }
                     else if (VARIABLE.IsFile)
                     {
@@ -157,7 +167,7 @@ namespace FirstProject.Model
                                 .Contains(Media_player.supportedMediaFormats[i].ToLower()))
                             {
                                 list.Add(new Template()
-                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png"});
+                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "music.png", fileinfo = createDate+size});
                                 flag = true;
                             }
                         }
@@ -170,7 +180,7 @@ namespace FirstProject.Model
                                     .Contains(imageSupported[a].ToLower()))
                                 {
                                     list.Add(new Template()
-                                        {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "imag.png"});
+                                        {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "imag.png", fileinfo = createDate + size });
                                     flag = true;
                                 }
                             }
@@ -178,7 +188,7 @@ namespace FirstProject.Model
                             if (!flag)
                             {
                                 list.Add(new Template()
-                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png"});
+                                    {FileName = VARIABLE.Name, Getfile = VARIABLE, Image = "other.png", fileinfo = createDate + size });
                             }
 
                             flag = false;
@@ -195,7 +205,11 @@ namespace FirstProject.Model
             {
                 string path=file.Path + "/" + DirectoryName;
                 Directory.CreateDirectory(path);
-                list.Add(new Template(){FileName =DirectoryName,Getfile = new File(path),Image = "folder.png"});
+                File temp = new File(path);
+
+                DateTime time=new FileInfo(temp.AbsolutePath).CreationTime;
+
+                list.Add(new Template(){FileName =DirectoryName,Getfile = temp,Image = "folder.png", fileinfo = "0" + time.Day + ".0" + time.Month + "." + time.Year });
             }
             catch (Exception e)
             {

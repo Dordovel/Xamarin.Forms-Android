@@ -10,6 +10,7 @@ namespace FirstProject.Model
         public string FileName { get; set; }
         public File Getfile { get; set; }
         public string Image { get; set; }
+        public string fileinfo { get; set; }
 
     }
 }

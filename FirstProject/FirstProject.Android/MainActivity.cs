@@ -39,7 +39,8 @@ namespace FirstProject.Droid
             ActivityCompat.RequestPermissions(this,
                 new String[] {
                     Manifest.Permission.ReadExternalStorage,
-                    Manifest.Permission.WriteExternalStorage
+                    Manifest.Permission.WriteExternalStorage,
+                    Manifest.Permission.RecordAudio
                 },
                 requestCode:1);
             
@@ -185,6 +186,27 @@ namespace FirstProject.Droid
                 base.OnBackPressed();
             }
         }
+
+        protected override void OnPause()
+        {
+            if (MediaPlayer.Media_player.isPlay)
+            {
+                MediaPlayer.Media_player.Pause();
+            }
+
+            base.OnPause();
+        }
+
+        protected override void OnResume()
+        {
+            if (MediaPlayer.Media_player.isPause)
+            {
+                MediaPlayer.Media_player.Resume();
+            }
+
+            base.OnResume();
+        }
+
     }
 }
 
