@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using Android.OS;
 using FirstProject.MediaPlayer;
-using Java.Util.Concurrent;
-using TagLib.Riff;
 using Xamarin.Forms;
-using Debug = System.Diagnostics.Debug;
 using Exception = System.Exception;
 using javaIO=Java.IO;
 using File = Java.IO.File;
@@ -26,6 +21,8 @@ namespace FirstProject.Model
         public static File Move_copy_file;
         private static Template template;
         private static bool move;
+
+        private File[] ListFile;
 
         public static readonly string[] imageSupported = new String[5]
         {
@@ -49,6 +46,8 @@ namespace FirstProject.Model
 
             Path = file.AbsolutePath;
 
+            Initialization();
+
             list = new ObservableCollection<Template>();
             
         }
@@ -58,25 +57,36 @@ namespace FirstProject.Model
             this.file = file;
             Path = file.AbsolutePath;
 
+            Initialization();
+
             list = new ObservableCollection<Template>();
 
+        }
+
+
+        public void Initialization()
+        {
+            this.ListFile = file.ListFiles();
         }
 
 
         public File[] sort(File [] fileList)
         {
             int index = 0;
-
-            for (int a = 0; a < fileList.Length; ++a)
-            {
-                if (fileList[a].IsDirectory)
+            
+                for (int a = 0; a < fileList.Length; ++a)
                 {
-                    File temp = fileList[index];
-                    fileList[index] = fileList[a];
-                    fileList[a] = temp;
-                    ++index;
+                    if (fileList[a] != null)
+                    {
+                        if (fileList[a].IsDirectory)
+                        {
+                            File temp = fileList[index];
+                            fileList[index] = fileList[a];
+                            fileList[a] = temp;
+                            ++index;
+                        }
+                    }
                 }
-            }
 
             return fileList;
 
@@ -100,7 +110,7 @@ namespace FirstProject.Model
 
             int count = 0;
 
-            foreach (File f in file.ListFiles())
+            foreach (File f in ListFile)
             {
                 if (f.Name.ToLower().Contains(fileName.ToLower()))
                 {
@@ -127,10 +137,10 @@ namespace FirstProject.Model
         }
         
 
-        public void initialInitialize()
+        public void Update()
         {
             Editor edit=null;
-            generateList(file.ListFiles());
+            generateList(ListFile);
         }
 
 
@@ -210,6 +220,9 @@ namespace FirstProject.Model
                 DateTime time=new FileInfo(temp.AbsolutePath).CreationTime;
 
                 list.Add(new Template(){FileName =DirectoryName,Getfile = temp,Image = "folder.png", fileinfo = "0" + time.Day + ".0" + time.Month + "." + time.Year });
+
+                Initialization();
+                Update();
             }
             catch (Exception e)
             {
@@ -223,25 +236,23 @@ namespace FirstProject.Model
         public bool Delete(Template template)
         {
             bool flag = false;
-                switch (template.Getfile.IsDirectory)
-                {
-                    case true:
-                       flag=DeleteDirectory(template.Getfile);
 
-                        break;
+            if (template.Getfile.IsDirectory)
+            {
+                flag = DeleteDirectory(template.Getfile);
+            }
+            else
+            {
+                File temp = template.Getfile;
 
-                    case false:
-
-                        File temp = template.Getfile;
-
-                        flag=temp.Delete();
-
-                        break;
-                }
+                flag = temp.Delete();
+            }
 
             if (flag)
             {
                 list.Remove(template);
+                Initialization();
+                Update();
             }
 
             return flag;
@@ -339,7 +350,10 @@ namespace FirstProject.Model
 
             template.Getfile = new File(path);
 
-            ResFile.list.Add(template);
+            list.Add(template);
+
+            Initialization();
+            Update();
 
             Move_copy_file = null;
 

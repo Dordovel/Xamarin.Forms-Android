@@ -14,6 +14,7 @@ namespace FirstProject
     {
         private static Files PersonFile;
         private static ToolbarItem item;
+        private static ToolbarItem itemSearch;
         public static ToolbarItem itemMusic;
         public static ToolbarItem paste;
 
@@ -59,7 +60,7 @@ namespace FirstProject
             
                 toolbar();
 
-            PersonFile.initialInitialize();
+            PersonFile.Update();
 
             listViewMainPage.ItemsSource = PersonFile.getList();
         }
@@ -75,7 +76,8 @@ namespace FirstProject
                 paste = new ToolbarItem()
                 {
                     Text = "Вставка",
-                    Order = ToolbarItemOrder.Primary
+                    Order = ToolbarItemOrder.Primary,
+                    Icon = new FileImageSource() { File = "paste.png" }
                 };
                 paste.Clicked += Item_Clicked1;
 
@@ -89,13 +91,15 @@ namespace FirstProject
                 Icon = new FileImageSource() { File = "new_folder.png" }
             };
 
-            item.Clicked += MenuItem_OnClicked;item = new ToolbarItem()
+            item.Clicked += MenuItem_OnClicked;
+
+            itemSearch = new ToolbarItem()
             {
                 Text = "Поиск",
                 Order = ToolbarItemOrder.Primary,
                 Icon = new FileImageSource() { File = "search.png" }
             };
-            item.Clicked += ItemOnClicked;
+            itemSearch.Clicked += ItemOnClicked;
 
 
             
@@ -109,6 +113,8 @@ namespace FirstProject
 
 
             ToolbarItems.Add(itemMusic);
+
+            ToolbarItems.Add(itemSearch);
 
             ToolbarItems.Add(item);
             
@@ -170,7 +176,7 @@ namespace FirstProject
             Head.Children.Remove(stackLayout);
             SearchFlag = false;
 
-            PersonFile.initialInitialize();
+            PersonFile.Update();
 
             listViewMainPage.ItemsSource = PersonFile.getList();
         }
