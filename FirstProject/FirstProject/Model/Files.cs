@@ -215,11 +215,6 @@ namespace FirstProject.Model
             {
                 string path=file.Path + "/" + DirectoryName;
                 Directory.CreateDirectory(path);
-                File temp = new File(path);
-
-                DateTime time=new FileInfo(temp.AbsolutePath).CreationTime;
-
-                list.Add(new Template(){FileName =DirectoryName,Getfile = temp,Image = "folder.png", fileinfo = "0" + time.Day + ".0" + time.Month + "." + time.Year });
 
                 Initialization();
                 Update();
@@ -250,7 +245,6 @@ namespace FirstProject.Model
 
             if (flag)
             {
-                list.Remove(template);
                 Initialization();
                 Update();
             }
@@ -298,7 +292,6 @@ namespace FirstProject.Model
         {
             Move_copy_file = template.Getfile;
             Files.template = template;
-            list.Remove(template);
             move = true;
             return true;
         }
@@ -349,8 +342,6 @@ namespace FirstProject.Model
             }
 
             template.Getfile = new File(path);
-
-            list.Add(template);
 
             Initialization();
             Update();
