@@ -3,7 +3,10 @@ using System.IO;
 using FirstProject.MediaPlayer;
 using FirstProject.Model;
 using Xamarin.Forms;
+using Button = Xamarin.Forms.Button;
 using File = Java.IO.File;
+using Label = Xamarin.Forms.Label;
+using MenuItem = Xamarin.Forms.MenuItem;
 
 namespace FirstProject
 {
@@ -18,7 +21,7 @@ namespace FirstProject
         private Label label;
         StackLayout stackLayout = null;
 
-        private static bool SearchFlag=false;
+        private bool SearchFlag=false;
 
         #region Ctor
 
@@ -95,6 +98,7 @@ namespace FirstProject
             item.Clicked += ItemOnClicked;
 
 
+            
             itemMusic = new ToolbarItem()
             {
                 Text = "Player",
@@ -112,36 +116,63 @@ namespace FirstProject
 
         private void ItemOnClicked(object sender, EventArgs e)
         {
-
             if (!SearchFlag)
             {
-                stackLayout=new StackLayout();
-
-                Grid stack = new Grid();
-
-                seachEdit = new Editor() {Text = "", AutoSize = EditorAutoSizeOption.Disabled};
-
-                Button button = new Button() {Text = "Search", HorizontalOptions = LayoutOptions.End};
-                button.Clicked += Button_Search_Clicked;
-
-                label = new Label() {TextColor = Color.AliceBlue};
-                label.HorizontalOptions = LayoutOptions.Start;
-
-                stack.Children.Add(seachEdit);
-
-                stack.Children.Add(button);
-                stackLayout.Children.Add(stack);
-                stackLayout.Children.Add(label);
-
-                Head.Children.Add(stackLayout);
-
-                SearchFlag = true;
+                OpenSearchWindow();
             }
             else
             {
-                Head.Children.Remove(stackLayout);
-                SearchFlag = false;
+               CloseSearchWindow();
             }
+        }
+
+        private void OpenSearchWindow()
+        {
+            stackLayout = new StackLayout();
+
+            Grid stack = new Grid();
+
+            Button button = new Button()
+            {
+                HorizontalOptions = LayoutOptions.End,
+                Image = "search.png",
+                WidthRequest = 50,
+                HeightRequest = 50,
+                BorderRadius = 100,
+                BackgroundColor = Color.Yellow
+
+            };
+
+            seachEdit = new Editor()
+            {
+                Text = "",
+                HorizontalOptions = LayoutOptions.FillAndExpand
+            };
+
+            button.Clicked += Button_Search_Clicked;
+
+            label = new Label() { TextColor = Color.Black };
+            label.HorizontalOptions = LayoutOptions.Start;
+
+            stack.Children.Add(seachEdit);
+
+            stack.Children.Add(button);
+            stackLayout.Children.Add(stack);
+            stackLayout.Children.Add(label);
+
+            Head.Children.Add(stackLayout);
+
+            SearchFlag = true;
+        }
+
+        private void CloseSearchWindow()
+        {
+            Head.Children.Remove(stackLayout);
+            SearchFlag = false;
+
+            PersonFile.initialInitialize();
+
+            listViewMainPage.ItemsSource = PersonFile.getList();
         }
 
         private async void Item_Clicked1(object sender, EventArgs e)
@@ -265,6 +296,11 @@ namespace FirstProject
             if (temp == null)
             {
                 Count.Text = "Error";
+            }
+
+            if (SearchFlag)
+            {
+                CloseSearchWindow();
             }
 
             Navigation.PushAsync(new MainPage(temp, Files.Path), true);

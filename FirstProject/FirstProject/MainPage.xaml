@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FirstProject"
              xmlns:styleSheets="clr-namespace:Xamarin.Forms.StyleSheets;assembly=Xamarin.Forms.Core"
+             xmlns:widget="clr-namespace:Android.Widget;assembly=Mono.Android"
              x:Class="FirstProject.MainPage"
              Title="Xamarin"
              >
@@ -14,7 +15,7 @@
 
     <ContentPage.Content>
         <StackLayout >
-            <StackLayout BackgroundColor="DarkSlateGray" x:Name="Head">
+            <StackLayout x:Name="Head">
                 <Label x:Name="Count" HorizontalTextAlignment="Start"  TextColor="#FF1744"
                FontSize="12" />
             </StackLayout>
