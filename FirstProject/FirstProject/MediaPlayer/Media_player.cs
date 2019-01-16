@@ -15,7 +15,7 @@ namespace FirstProject.MediaPlayer
         public static bool isPause = false;
         public static bool isStop = false;
 
-        public static readonly String []supportedMediaFormats =new String[2]
+        public static readonly String []supportedMediaFormats =
         {
             "FLAC",
             "MP3"
@@ -49,7 +49,6 @@ namespace FirstProject.MediaPlayer
             if (isPlay)
             {
                 player.Pause();
-                MainPage.itemMusic.Icon = new FileImageSource() {File = "pause.png"};
                 isPlay = false;
                 isPause = true;
             }
@@ -102,7 +101,7 @@ namespace FirstProject.MediaPlayer
         public static Dictionary<string, string> Tags()
         {
         
-        var tag = TagLib.File.Create(music_File.AbsolutePath);
+            var tag = TagLib.File.Create(music_File.AbsolutePath);
 
             Dictionary<string, string> MusicTags = new Dictionary<string, string>()
             {

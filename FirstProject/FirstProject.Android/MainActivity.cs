@@ -132,7 +132,7 @@ namespace FirstProject.Droid
             var Album = musicViev.FindViewById<TextView>(Resource.Id.Aulbum_Year);
             var Gengres = musicViev.FindViewById<TextView>(Resource.Id.Gengre);
             var Bitreit = musicViev.FindViewById<TextView>(Resource.Id.Bitreit);
-            if (MediaPlayer.Media_player.isPlay)
+            if (MediaPlayer.Media_player.isPlay || MediaPlayer.Media_player.isPause)
             {
                 musicDialog.Show();
                 label.Text ="Исполнитель: \n\t\t"+MediaPlayer.Media_player.Tags()["Performer"];

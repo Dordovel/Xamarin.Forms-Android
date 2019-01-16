@@ -15,7 +15,7 @@ namespace FirstProject
         private static Files PersonFile;
         private static ToolbarItem item;
         private static ToolbarItem itemSearch;
-        public static ToolbarItem itemMusic;
+        private static ToolbarItem itemMusic;
         public static ToolbarItem paste;
 
         private Editor seachEdit;
