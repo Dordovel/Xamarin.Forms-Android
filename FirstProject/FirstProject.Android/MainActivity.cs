@@ -17,7 +17,7 @@ using View = Android.Views.View;
 [assembly: Xamarin.Forms.Dependency(typeof(MainActivity))]
 namespace FirstProject.Droid
 {
-    [Activity(Label = "FirstProject", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
+    [Activity(Label = "Project", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity,IPresenter
     {
@@ -40,7 +40,6 @@ namespace FirstProject.Droid
                 new String[] {
                     Manifest.Permission.ReadExternalStorage,
                     Manifest.Permission.WriteExternalStorage,
-                    Manifest.Permission.RecordAudio
                 },
                 requestCode:1);
             
