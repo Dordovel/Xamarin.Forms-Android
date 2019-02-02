@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Content;
 using Android.Media;
+using Android.Media.Session;
+using Android.Support.V4.Media;
 using FirstProject.Droid;
 using File = Java.IO.File;
 using String = System.String;
@@ -56,6 +59,7 @@ namespace FirstProject.MediaPlayer
                 player.Pause();
                 isPlay = false;
                 isPause = true;
+                MainActivity.GetAudioManager.AbandonAudioFocus(focus);
             }
         }
 
@@ -83,15 +87,25 @@ namespace FirstProject.MediaPlayer
             player.Prepare();
         }
 
+        private static AudioFocusRequest getFocus()
+        {
+            focus = new Focus();
+
+            return MainActivity.GetAudioManager.RequestAudioFocus(focus, Stream.Music, AudioFocus.Gain);
+        }
+
         public static void Start()
         {
-            if (player != null)
+            if (getFocus()==AudioFocusRequest.Granted)
             {
-                player.Start();
-                isPlay = true;
-                isPause = false;
-                isStop = false;
-            }
+                if (player != null)
+                {
+                    player.Start();
+                    isPlay = true;
+                    isPause = false;
+                    isStop = false;
+                }
+            };
         }
 
         public static void Dispose()
@@ -101,9 +115,9 @@ namespace FirstProject.MediaPlayer
                 isPlay = false;
                 player.Stop();
                 player.Dispose();
+                MainActivity.GetAudioManager.AbandonAudioFocus(focus);
             }
-
-            MainActivity.GetAudioManager.AbandonAudioFocus(focus);
+            
         }
 
         public static Dictionary<string, string> Tags()
@@ -127,19 +141,14 @@ namespace FirstProject.MediaPlayer
 
     class Focus : Java.Lang.Object, AudioManager.IOnAudioFocusChangeListener
     {
-        private static bool focus;
 
-        public bool GetStatus
-        {
-            get { return focus; }
-        }
-
-    void IDisposable.Dispose()
+        void IDisposable.Dispose()
         {
             Dispose();
         }
 
         public IntPtr Handle { get; }
+
         public void OnAudioFocusChange(AudioFocus focusChange)
         {
             switch (focusChange)
@@ -147,7 +156,6 @@ namespace FirstProject.MediaPlayer
                 case AudioFocus.GainTransient:
                     break;
                 case AudioFocus.LossTransient:
-                    focus = false;
                     break;
             }
         }
