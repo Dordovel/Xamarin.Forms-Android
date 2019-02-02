@@ -2,7 +2,9 @@
 using System.Threading;
 using Android;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
+using Android.Media;
 using Android.OS;
 using Android.Support.V4.App;
 using Android.Views;
@@ -15,11 +17,12 @@ using View = Android.Views.View;
 
 
 [assembly: Xamarin.Forms.Dependency(typeof(MainActivity))]
+
 namespace FirstProject.Droid
 {
     [Activity(Label = "Project", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity,IPresenter
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IPresenter
     {
         private static AlertDialog dialog;
         private static View view;
@@ -29,6 +32,17 @@ namespace FirstProject.Droid
         private static View picturesView;
         private static AlertDialog picturesDialog;
 
+        private static NotificationCompat.Builder builder;
+        private static NotificationManager notificationManager1;
+
+        private static AudioManager focus;
+
+        public static AudioManager GetAudioManager
+        {
+            get { return focus; }
+        }
+
+
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Tabbar;
@@ -37,20 +51,25 @@ namespace FirstProject.Droid
             base.OnCreate(bundle);
 
             ActivityCompat.RequestPermissions(this,
-                new String[] {
+                new String[]
+                {
                     Manifest.Permission.ReadExternalStorage,
                     Manifest.Permission.WriteExternalStorage,
                 },
-                requestCode:1);
-            
-            
+                requestCode: 1);
+
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+
+            CreateNotificationChannel();
+
+            focus = (AudioManager) GetSystemService(Context.AudioService);
 
             AlertDialogOpen();
             AlertDialogMusic();
             AlertDialogImage();
-            
+
         }
 
         private void AlertDialogOpen()
@@ -82,13 +101,13 @@ namespace FirstProject.Droid
         }
 
         private void AlertDialogImage()
-        { 
-            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflaer = LayoutInflater.From(this);
-            picturesView = inflaer.Inflate(Image, null);
+            picturesView = inflaer.Inflate(Resource.Layout.Image, null);
             builder.SetView(picturesView);
             picturesDialog = builder.Create();
-            
+
         }
 
         private void ButtonPause_Click(object sender, EventArgs e)
@@ -102,17 +121,20 @@ namespace FirstProject.Droid
             {
                 MediaPlayer.Media_player.Resume();
             }
+
             new Thread(tread).Start();
         }
 
         private void AlertDialogButton_Ok_Click(object sender, EventArgs e)
         {
             Model.Files temp = Model.Files.ResFile;
-           
+
             var DirName = view.FindViewById<EditText>(Resource.Id.editTextDialogAlert).Text;
             if (DirName != null)
             {
-                Toast.MakeText(this, temp.NewDirectory(DirName)?"Каталог: "+DirName+" успешно создан!":"Ошибка!", ToastLength.Long).Show();
+                Toast.MakeText(this,
+                    temp.NewDirectory(DirName) ? "Каталог: " + DirName + " успешно создан!" : "Ошибка!",
+                    ToastLength.Long).Show();
 
                 dialog.Cancel();
             }
@@ -134,20 +156,21 @@ namespace FirstProject.Droid
             if (MediaPlayer.Media_player.isPlay || MediaPlayer.Media_player.isPause)
             {
                 musicDialog.Show();
-                label.Text ="Исполнитель: \n\t\t"+MediaPlayer.Media_player.Tags()["Performer"];
+                label.Text = "Исполнитель: \n\t\t" + MediaPlayer.Media_player.Tags()["Performer"];
                 performer.Text = "Название: \n\t\t" + MediaPlayer.Media_player.Tags()["Title"];
-                Album.Text = "Альбом: \n\t\t" + MediaPlayer.Media_player.Tags()["Album"]+" "+ MediaPlayer.Media_player.Tags()["Year"];
+                Album.Text = "Альбом: \n\t\t" + MediaPlayer.Media_player.Tags()["Album"] + " " +
+                             MediaPlayer.Media_player.Tags()["Year"];
                 Gengres.Text = "Жанр: \n\t\t" + MediaPlayer.Media_player.Tags()["Gengres"];
                 Bitreit.Text = "Битрейт: \n\t\t" + MediaPlayer.Media_player.Tags()["Bitreit"];
                 seekBar.Max = MediaPlayer.Media_player.Duration;
                 seekBar.StopTrackingTouch += SeekBar_StopTrackingTouch;
-                   new Thread(tread).Start();
+                new Thread(tread).Start();
 
             }
         }
 
 
-        public void ShowPictures(String Path)
+        public void ShowPictures(string Path)
         {
             ImageView image = picturesView.FindViewById<ImageView>(Resource.Id.imageView1);
 
@@ -161,7 +184,46 @@ namespace FirstProject.Droid
             var duration = musicViev.FindViewById<SeekBar>(Resource.Id.duration);
             MediaPlayer.Media_player.CurrentPosition = duration.Progress;
         }
-        
+
+        private void CreateNotificationChannel()
+        {
+            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
+            {
+                return;
+            }
+
+            var channel = new NotificationChannel("10000", "Notification", NotificationImportance.Default);
+
+            var notificationManager = (NotificationManager) GetSystemService(NotificationService);
+            notificationManager.CreateNotificationChannel(channel);
+
+            builder = new NotificationCompat.Builder(this, "10000");
+            notificationManager1 = GetSystemService(Context.NotificationService) as NotificationManager;
+
+        }
+
+
+        public void ShowNitification(string name)
+        {
+            builder
+                .SetContentTitle(name)
+                .SetSmallIcon(Resource.Drawable.music_play)
+                .SetDefaults((int) NotificationDefaults.Vibrate);
+
+            notificationManager1.Notify(0, builder.Build());
+            //new Thread(ProgressNotification).Start();
+        }
+
+        private void ProgressNotification()
+        {
+            while (MediaPlayer.Media_player.isPlay)
+            {
+                builder.SetProgress(MediaPlayer.Media_player.Duration, MediaPlayer.Media_player.CurrentPosition,
+                    false);
+
+                notificationManager1.Notify(0, builder.Build());
+            }
+        }
 
         private void tread()
         {
@@ -207,5 +269,6 @@ namespace FirstProject.Droid
         }
 
     }
+
 }
 

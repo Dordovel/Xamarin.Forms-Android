@@ -35,14 +35,8 @@ namespace FirstProject.Model
 
         public Files()
         {
-            if (getAndroidVersion() > 7)
-            {
-                file = new File("/storage/emulated/0");
-            }
-            else
-            {
-                file = new File("/");
-            }
+            
+            file = new File("/sdcard");
 
             Path = file.AbsolutePath;
 

@@ -240,6 +240,13 @@ namespace FirstProject
                     {
                         MediaPlayer.Media_player player = new Media_player(temp);
                         Media_player.Start();
+
+                        Device.BeginInvokeOnMainThread(
+                            () =>
+                            {
+                                DependencyService.Get<IPresenter>().ShowNitification(temp.Name);
+                            });
+
                         listViewMainPage.SelectedItem = null;
                         return;
                     }
